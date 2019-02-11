@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".Requester.Activity.RequestMainActivity">
+
+    <Button
+        android:id="@+id/help_btn"
+        android:layout_margin="10dp"
+        android:text="도움 요청"
+        android:textSize="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/call_btn"
+        android:layout_margin="10dp"
+        android:text="119 요청"
+        android:textSize="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/setting_btn"
+        android:layout_margin="10dp"
+        android:text="설정"
+        android:textSize="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.3"/>
+
+</LinearLayout>
