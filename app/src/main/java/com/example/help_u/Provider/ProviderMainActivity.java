@@ -28,9 +28,4 @@ public class ProviderMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
-    }
 }

@@ -4,51 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:id="@+id/setting_frame"
     tools:context=".Provider.ProviderSettingActivity">
 
-    <TextView
-        android:background="#222222"
+    <FrameLayout
+        android:id="@+id/provider_setting_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="설정"
-        android:gravity="center"
-        android:textSize="50dp"/>
+        android:layout_height="match_parent"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="50dp">
-
-        <Button
-            android:id="@+id/provider_user_info_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="사용자 정보"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-
-        <Button
-            android:id="@+id/provider_alarm_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="알림 설정"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-
-        <Button
-            android:id="@+id/provider_logout_btn"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="로그아웃"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
-
-
-    </LinearLayout>
 
 </LinearLayout>
