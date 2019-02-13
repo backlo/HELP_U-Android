@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:background="#222222"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="설정"
+        android:gravity="center"
+        android:textSize="50dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="50dp">
+
+        <Button
+            android:id="@+id/provider_user_info_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="사용자 정보"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/provider_alarm_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="알림 설정"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+
+        <Button
+            android:id="@+id/provider_logout_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="로그아웃"
+            android:textSize="30dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"/>
+    </LinearLayout>
+
+</LinearLayout>

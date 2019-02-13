@@ -10,10 +10,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+<<<<<<< HEAD
         android:theme="@style/AppTheme">
         <activity
             android:name=".Requester.Activity.RequestPopupActivity"
             android:theme="@android:style/Theme.Dialog" />
+=======
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".Provider.ProviderSettingActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+>>>>>>> 1cf031a0d4f2fee77b4df34f793f51ca983a10f6
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

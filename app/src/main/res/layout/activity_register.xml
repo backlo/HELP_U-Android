@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity">
+    <TextView
+        android:background="#222222"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:gravity="center"
+        android:textSize="50dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="I D :"
+            android:layout_gravity="center_vertical"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:id="@+id/edit_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:hint="아이디"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/overlap_check_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.7"
+            android:layout_gravity="center_vertical"
+            android:text="중복체크"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/overrlap_result_txt"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:textColor="#E91E63"
+        android:layout_gravity="center"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.8"
+            android:text="PSW :"
+            android:layout_gravity="center_vertical"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:id="@+id/edit_psw"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:hint="비밀번호"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/edit_psw_second"
+        android:layout_width="267dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="비밀번호확인"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/edit_psw_checker"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="password check"
+        android:layout_margin="5dp"/>
+
+
+
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:hint="이름"/>
+
+
+
+        <EditText
+            android:id="@+id/edit_phonenum"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:hint="휴대폰번호"
+            android:inputType="number"/>
+
+
+    <EditText
+        android:id="@+id/edit_residentnum"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:hint="주민등록번호"
+        android:inputType="number" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="성 별 : "
+            android:textSize="17sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="25dp"
+                    android:text="남자"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="여자"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/help_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="20dp"
+                android:text="도움 요청자"/>
+
+            <RadioButton
+                android:id="@+id/provider_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="도움 제공자"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/signup_btn"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="15dp"
+        android:text="회원가입완료" />
+
+    <TextView
+        android:id="@+id/textViewSignin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="회원이시면 여기에서 로그인 해주세요."
+        android:textAlignment="center" />
+
+
+
+</LinearLayout>
