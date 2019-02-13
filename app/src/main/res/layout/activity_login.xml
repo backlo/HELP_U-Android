@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorMainTheme"
+    android:orientation="vertical"
     tools:context=".LoginActivity">
-    
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,70 +16,64 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/main"/>
+            android:src="@drawable/main" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="30dp"
+        android:layout_weight="1.5"
         android:gravity="center|top"
-        android:layout_weight="1.5">
+        android:orientation="vertical"
+        android:padding="30dp">
 
         <EditText
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="아이디"
             android:inputType="text"
-            android:hint="아이디"/>
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
 
         <EditText
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="비밀번호"
             android:inputType="text"
-            android:hint="비밀번호"/>
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
 
 
         <LinearLayout
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-<<<<<<< HEAD
             <Button
                 android:id="@+id/sign_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="로그인"/>
-=======
-        <Button
-            android:id="@+id/sign_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="회원가입"/>
->>>>>>> 1cf031a0d4f2fee77b4df34f793f51ca983a10f6
+                android:text="로그인" />
 
             <Button
+                android:id="@+id/sign_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="회원가입"/>
+                android:text="회원가입" />
+
 
         </LinearLayout>
 
         <TextView
-            android:textColor="#ffffff"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:text="아이디/비밀번호 찾기"/>
+            android:layout_marginTop="10dp"
+            android:text="아이디/비밀번호 찾기"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
 
     </LinearLayout>
 

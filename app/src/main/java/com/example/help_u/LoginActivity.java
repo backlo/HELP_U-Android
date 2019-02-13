@@ -2,12 +2,9 @@ package com.example.help_u;
 
 import android.content.Intent;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.view.View;
 import android.view.WindowManager;
-=======
 import android.support.v7.app.AppCompatActivity;
->>>>>>> 1cf031a0d4f2fee77b4df34f793f51ca983a10f6
 import android.widget.Button;
 
 import com.example.help_u.Provider.ProviderMainActivity;
@@ -27,10 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-<<<<<<< HEAD
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-=======
->>>>>>> 1cf031a0d4f2fee77b4df34f793f51ca983a10f6
         ButterKnife.bind(this);
 
     }
