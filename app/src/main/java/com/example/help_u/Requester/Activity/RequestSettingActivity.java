@@ -2,6 +2,7 @@ package com.example.help_u.Requester.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 
 import com.example.help_u.R;
@@ -12,8 +13,8 @@ public class RequestSettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requester_setting);
-
+        setContentView(R.layout.activity_request_setting);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.setting_fragment, new RequestSettingFragment()).commit();
 

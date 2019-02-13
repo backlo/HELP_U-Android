@@ -1,15 +1,20 @@
 package com.example.help_u.Requester.Fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.help_u.R;
+import com.example.help_u.Requester.Activity.RequestSettingActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,17 +23,17 @@ import butterknife.OnClick;
 public class RequestSettingFragment extends Fragment {
 
     @BindView(R.id.user_info_btn)
-    Button userBtn;
+    LinearLayout userBtn;
     @BindView(R.id.call_enroll_btn)
-    Button enrollBtn;
+    LinearLayout enrollBtn;
     @BindView(R.id.write_message_btn)
-    Button messageBtn;
+    LinearLayout messageBtn;
     @BindView(R.id.battery_btn)
-    Button batteryBtn;
+    LinearLayout batteryBtn;
     @BindView(R.id.help_number_btn)
-    Button helpNumBtn;
+    LinearLayout helpNumBtn;
     @BindView(R.id.logout_btn)
-    Button logoutBtn;
+    LinearLayout logoutBtn;
 
     public RequestSettingFragment() {   }
 
@@ -68,7 +73,32 @@ public class RequestSettingFragment extends Fragment {
 
     @OnClick(R.id.logout_btn)
     public void logout(){
-        Toast.makeText(getActivity().getApplicationContext(), "로그아웃 버튼!", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder logoutAlert = new AlertDialog.Builder(getContext());
+        logoutAlert.setTitle("로그아웃");
+        logoutAlert.setMessage("로그아웃 하시겠습니까?");
+        logoutAlert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //로그아웃 보내기
+                Toast.makeText(getContext(),"로그아웃되었습니다.",Toast.LENGTH_SHORT).show();
+            }
+        }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        final AlertDialog dialog = logoutAlert.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface args) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+        dialog.show();
     }
 
 }

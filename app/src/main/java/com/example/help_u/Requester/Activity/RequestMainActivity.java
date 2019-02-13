@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import com.example.help_u.R;
 
@@ -15,18 +16,25 @@ import butterknife.OnClick;
 public class RequestMainActivity extends AppCompatActivity {
 
     @BindView(R.id.help_btn)
-    Button helpBtn;
+    LinearLayout helpBtn;
     @BindView(R.id.call_btn)
-    Button callBtn;
+    LinearLayout callBtn;
     @BindView(R.id.setting_btn)
-    Button settingBtn;
+    LinearLayout settingBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_requester_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_request_main);
         ButterKnife.bind(this);
 
+    }
+
+    @OnClick(R.id.help_btn)
+    public void help_Btn(){
+        Intent i = new Intent(this, RequestPopupActivity.class);
+        startActivity(i);
     }
 
     @OnClick(R.id.call_btn)
@@ -42,4 +50,6 @@ public class RequestMainActivity extends AppCompatActivity {
         Intent intent = new Intent(RequestMainActivity.this,RequestSettingActivity.class);
         startActivity(intent);
     }
+
+
 }

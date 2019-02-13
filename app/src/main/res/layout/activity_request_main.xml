@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorMainTheme"
+    android:padding="20dp"
+    tools:context=".Requester.Activity.RequestMainActivity">
+
+    <LinearLayout
+        android:id="@+id/help_btn"
+        android:layout_margin="10dp"
+        android:background="@color/colorButtonTheme"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:layout_margin="15dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/help_image"/>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="35dp"
+            android:textColor="@color/colorWhite"
+            android:text="도움 요청"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/call_btn"
+        android:layout_margin="10dp"
+        android:background="@color/colorButtonTheme"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/oon_image"/>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="35dp"
+            android:textColor="@color/colorWhite"
+            android:text="119 요청"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/setting_btn"
+        android:layout_margin="10dp"
+        android:background="@color/colorButtonTheme"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/setting_image"/>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="35dp"
+            android:textColor="@color/colorWhite"
+            android:text="설정"/>
+
+    </LinearLayout>
+
+</LinearLayout>
