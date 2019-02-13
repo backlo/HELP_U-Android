@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import com.example.help_u.Provider.ProviderMainActivity;
+import com.example.help_u.Requester.Activity.RequestMainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_login)
     public void login(){
         //Intent i = new Intent(LoginActivity.this, RequestMainActivity.class );
-        Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+        Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
         startActivity(i);
         finish();
     }
