@@ -6,25 +6,55 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.help_u.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class RequestEnrollFragment extends Fragment {
 
+    @BindView(R.id.enroll_add)
+    Button add;
+    @BindView(R.id.enroll_del)
+    Button del;
+    @BindView(R.id.enroll_commit)
+    Button enrollCommit;
+    @BindView(R.id.enroll_cancel)
+    Button enrollCancel;
 
-    public RequestEnrollFragment() {
-        // Required empty public constructor
-    }
+    public RequestEnrollFragment() { }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_request_enroll, container, false);
+        View v = inflater.inflate(R.layout.fragment_request_enroll, container, false);
+        ButterKnife.bind(this, v);
+
+        return v;
+    }
+
+    @OnClick(R.id.enroll_add)
+    public void addPhone(){
+
+    }
+
+    @OnClick(R.id.enroll_del)
+    public void delPhone(){
+
+    }
+
+    @OnClick(R.id.enroll_commit)
+    public void enrollCommit(){
+
+    }
+
+    @OnClick(R.id.enroll_cancel)
+    public void enrollCancel(){
+        getActivity().onBackPressed();
     }
 
 }

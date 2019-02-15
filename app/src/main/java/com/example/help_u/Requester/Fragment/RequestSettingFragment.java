@@ -94,7 +94,7 @@ public class RequestSettingFragment extends Fragment {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface args) {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
             }
         });

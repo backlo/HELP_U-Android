@@ -4,22 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     tools:context=".Requester.Fragment.RequestUserInfoFragment">
 
     <TextView
-        android:background="#222222"
+        android:background="@color/colorMainTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="사용자 정보"
         android:gravity="center"
-        android:textSize="50dp"/>
+        android:textSize="30dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:padding="50dp"
-        android:gravity="center|top"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
@@ -31,12 +32,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="이름 : "
-                android:textSize="30dp"/>
+                android:textSize="20dp"/>
 
             <EditText
+                android:id="@+id/userinfo_name_edit"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -48,12 +51,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="주소 : "
-                android:textSize="30dp"/>
+                android:textSize="20dp"/>
 
             <EditText
+                android:id="@+id/userinfo_address_edit"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -65,12 +70,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="전화번호 : "
-                android:textSize="30dp"/>
+                android:textSize="20dp"/>
 
             <EditText
+                android:id="@+id/userinfo_phonenumber_id"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:inputType="text"/>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -78,21 +85,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="5"
+        android:layout_weight="4"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="수정"
+            android:id="@+id/userinfo_commit"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="설정"
             android:textSize="20dp"/>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="확인"
+            android:id="@+id/userinfo_cancel"
+            android:layout_margin="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
             android:textSize="20dp"/>
 
     </LinearLayout>
