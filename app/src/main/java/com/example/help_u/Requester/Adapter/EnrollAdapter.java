@@ -13,7 +13,6 @@ import com.example.help_u.R;
 
 import java.util.HashMap;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,7 +24,8 @@ public class EnrollAdapter extends BaseAdapter {
     TextView enrollName;
     @BindView(R.id.enroll_listiview_number)
     TextView enrollNumber;
-
+    @BindView(R.id.enroll_check)
+    CheckBox enrollCheck;
 
     private static String key;
 
@@ -41,7 +41,7 @@ public class EnrollAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -58,11 +58,26 @@ public class EnrollAdapter extends BaseAdapter {
         enrollName.setText(key);
         enrollNumber.setText(itemList.get(key));
 
+        enrollCheck.setOnClickListener(new CheckBox.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(((CheckBox)v).isChecked()){
+                    Log.e("Enroll >> ", key+" 삭제해버리자");
+                }
+            }
+        });
+
         return convertView;
     }
 
     public void addItem(String name, String number) {
         itemList.put(name, number);
         key = name;
+    }
+
+    public void deleteItem(){
+        Log.e("Enroll >> ", "삭제");
+
     }
 }

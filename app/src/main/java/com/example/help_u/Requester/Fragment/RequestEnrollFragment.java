@@ -34,8 +34,6 @@ public class RequestEnrollFragment extends Fragment {
     Button enrollCancel;
     @BindView(R.id.enroll_listview)
     ListView listView;
-    @BindView(R.id.enroll_check)
-    CheckBox enrollCheck;
 
     EnrollAdapter enrollAdapter;
 
@@ -60,14 +58,7 @@ public class RequestEnrollFragment extends Fragment {
 
     @OnClick(R.id.enroll_del)
     public void delPhone(){
-        enrollCheck.setOnClickListener(new CheckBox.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(((CheckBox)v).isChecked()){
-                    Log.e("Enroll >> ", "gd");
-                }
-            }
-        });
+       enrollAdapter.deleteItem();
     }
 
     @OnClick(R.id.enroll_commit)
