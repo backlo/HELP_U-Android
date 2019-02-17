@@ -4,78 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorMainTheme"
     android:orientation="vertical"
     tools:context=".LoginActivity">
-    
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.2">
+        android:layout_weight="1">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="HELP_U"
-            android:textSize="70dp"
-            android:gravity="center"/>
+            android:src="@drawable/main" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:gravity="center|top"
         android:orientation="vertical"
-        android:padding="30dp"
-        android:gravity="center"
-        android:layout_weight="1.2">
+        android:padding="30dp">
 
         <EditText
             android:id="@+id/login_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="아이디"/>
+            android:hint="아이디"
+            android:inputType="text"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
 
         <EditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="비밀번"/>
+            android:hint="비밀번호"
+            android:inputType="text"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_weight="1.5">
-
-        <Button
-            android:id="@+id/sign_login"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="로그인"/>
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/sign_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="회원가입"/>
+            <Button
+                android:id="@+id/sign_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그인" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/sign_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원가입" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.5"
-        android:gravity="center">
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:text="아이디/비밀번호 찾기"/>
+            android:layout_marginTop="10dp"
+            android:text="아이디/비밀번호 찾기"
+            android:textColor="#ffffff"
+            android:textSize="15dp" />
 
     </LinearLayout>
+
 
 </LinearLayout>

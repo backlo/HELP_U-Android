@@ -3,11 +3,14 @@ package com.example.help_u;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.WindowManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.help_u.Provider.ProviderMainActivity;
+import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.example.help_u.model.Parameter;
 import com.example.help_u.model.UserInfo;
 import com.google.gson.Gson;
@@ -39,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
         userInfo = new UserInfo();
