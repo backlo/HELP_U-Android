@@ -2,11 +2,12 @@ package com.example.help_u.Requester.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.SystemClock;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
-import android.widget.Button;
 
 import com.example.help_u.R;
 
@@ -25,6 +26,7 @@ public class RequestMainActivity extends AppCompatActivity {
     @BindView(R.id.setting_btn)
     LinearLayout settingBtn;
 
+    private static long lastClickTime = 0;
     private Retrofit retrofit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +47,33 @@ public class RequestMainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+    //도움 요청 버튼
+    @OnClick(R.id.help_btn)
+    public void help_Btn(){
+        if(preventionClick() == true) {
+            Intent i = new Intent(this, RequestPopupActivity.class);
+            startActivity(i);
+        }
     }
 
     //119 버튼
     @OnClick(R.id.call_btn)
     public void call_119(){
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:119"));
-        startActivity(intent);
+        if(preventionClick() == true) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:119"));
+            startActivity(intent);
+        }
     }
 
     //setting 버튼
     @OnClick(R.id.setting_btn)
     public void goSettingBtn(){
-        Intent intent = new Intent(RequestMainActivity.this,RequestSettingActivity.class);
-        startActivity(intent);
-    }
+        if(preventionClick() == true) {
+            Intent intent = new Intent(RequestMainActivity.this, RequestSettingActivity.class);
+            startActivity(intent);
+        }
 
     @OnClick(R.id.help_btn)
     public void sendHelp(){
@@ -75,6 +87,19 @@ public class RequestMainActivity extends AppCompatActivity {
 //                    Log.e("도움요청 response->",""+serverResponse.getResultCode()+","+serverResponse.getMessage());
 //                }
 //            }
+    }
+
+    //더블클릭 방지 함수
+    private boolean preventionClick(){
+        if(SystemClock.elapsedRealtime() - lastClickTime < 1000){
+            return false;
+        }else{
+            lastClickTime = SystemClock.elapsedRealtime();
+            return true;
+        }
+    }
+
+
 //
 //            @Override
 //            public void onFailure(Call<ServerResponse> call, Throwable t) {

@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.help_u.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -18,7 +20,7 @@ import butterknife.ButterKnife;
 
 public class EnrollAdapter extends BaseAdapter {
 
-    private HashMap<String, String> itemList = new HashMap<>();
+    HashMap<String, String> listItem = new HashMap<>();
 
     @BindView(R.id.enroll_listview_name)
     TextView enrollName;
@@ -29,14 +31,17 @@ public class EnrollAdapter extends BaseAdapter {
 
     private static String key;
 
+    public EnrollAdapter() {  }
+
+
     @Override
     public int getCount() {
-        return itemList.size();
+        return listItem.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return itemList.get(position);
+        return listItem.get(position);
     }
 
     @Override
@@ -53,29 +58,24 @@ public class EnrollAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.enroll_custom_listview, parent, false);
             ButterKnife.bind(this, convertView);
+
         }
 
         enrollName.setText(key);
-        enrollNumber.setText(itemList.get(key));
-
-        enrollCheck.setOnClickListener(new CheckBox.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if(((CheckBox)v).isChecked()){
-                    Log.e("Enroll >> ", key+" 삭제해버리자");
-                }
-            }
-        });
+        enrollNumber.setText(listItem.get(key));
 
         return convertView;
     }
 
     public void addItem(String name, String number) {
-        itemList.put(name, number);
         key = name;
+        listItem.put(key,number);
     }
 
+    public void deleteItem(){
+        Log.e("Enroll >> ", "삭제");
+    }
+}
     public void deleteItem(){
         Log.e("Enroll >> ", "삭제");
 

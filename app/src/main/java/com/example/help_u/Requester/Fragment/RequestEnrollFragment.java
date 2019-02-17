@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
@@ -23,10 +25,20 @@ import butterknife.OnClick;
 //연락처 등록 부분
 public class RequestEnrollFragment extends Fragment {
 
-
     @BindView(R.id.enroll_add)
     Button add;
     @BindView(R.id.enroll_del)
+    Button del;
+    @BindView(R.id.enroll_commit)
+    Button enrollCommit;
+    @BindView(R.id.enroll_cancel)
+    Button enrollCancel;
+    @BindView(R.id.enroll_listview)
+    ListView listView;
+
+    EnrollAdapter enrollAdapter;
+
+    public RequestEnrollFragment() { enrollAdapter = new EnrollAdapter(); }
     Button del;
     @BindView(R.id.enroll_commit)
     Button enrollCommit;
@@ -43,7 +55,6 @@ public class RequestEnrollFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_request_enroll, container, false);
-        return inflater.inflate(R.layout.fragment_request_enroll, container, false);
         ButterKnife.bind(this, v);
         listView.setAdapter(enrollAdapter);
         return v;
@@ -88,6 +99,7 @@ public class RequestEnrollFragment extends Fragment {
 
         cursor.close();
 
+        super.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode,resultCode,data);
     }
 

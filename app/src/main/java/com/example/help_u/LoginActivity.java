@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.help_u.Provider.ProviderMainActivity;
+import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.example.help_u.model.Parameter;
 import com.example.help_u.model.UserInfo;
@@ -31,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.sign_register)
     Button sign_register;
     @BindView(R.id.login_id)
+    private static long lastClickTime = 0;
     EditText login_id;
     @BindView(R.id.login_password)
     EditText login_password;
@@ -67,10 +68,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.sign_login)
     public void login(){
-        //Intent i = new Intent(LoginActivity.this, RequestMainActivity.class );
-        Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
-        startActivity(i);
-        finish();
+        if(preventionClick() == true){
+            Intent i = new Intent(LoginActivity.this, RequestMainActivity.class );
+            startActivity(i);
+            finish();
     public void login() {
         String id = login_id.getText().toString();
         String password = login_password.getText().toString();
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("로그인 error ->", "" + t.toString());
             }
         });*/
+        }
     }
 
     @OnClick(R.id.sign_register)
@@ -121,5 +123,15 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class );
         startActivity(intent);
         finish();
+    }
+
+    //더블클릭 방지 함수
+    private boolean preventionClick(){
+        if(SystemClock.elapsedRealtime() - lastClickTime < 1000){
+            return false;
+        }else{
+            lastClickTime = SystemClock.elapsedRealtime();
+            return true;
+        }
     }
 }
