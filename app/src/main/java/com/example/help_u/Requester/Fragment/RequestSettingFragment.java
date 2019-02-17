@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,10 @@ public class RequestSettingFragment extends Fragment {
     @BindView(R.id.logout_btn)
     LinearLayout logoutBtn;
 
-    public RequestSettingFragment() {   }
+    private static long lastClickTime = 0;
+
+    public RequestSettingFragment() {
+    }
 
 
     @Override
@@ -49,64 +53,85 @@ public class RequestSettingFragment extends Fragment {
 
     //사용자 설정 버튼
     @OnClick(R.id.user_info_btn)
-    public void goUserInfo(){
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
+    public void goUserInfo() {
+        if (preventionClick() == true) {
+            getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
+        }
     }
 
     //연락처 등록 버튼
     @OnClick(R.id.call_enroll_btn)
-    public void goCallEnroll(){
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestEnrollFragment()).addToBackStack(null).commit();
+    public void goCallEnroll() {
+        if (preventionClick() == true) {
+            getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestEnrollFragment()).addToBackStack(null).commit();
+        }
     }
 
     //메시지 작성 버튼
     @OnClick(R.id.write_message_btn)
-    public void goWriteMessage(){
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestMessageFragment()).addToBackStack(null).commit();
+    public void goWriteMessage() {
+        if (preventionClick() == true) {
+            getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestMessageFragment()).addToBackStack(null).commit();
+        }
     }
 
     //배터리 설정 버튼
     @OnClick(R.id.battery_btn)
-    public void goBattery(){
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestBatteryFragment()).addToBackStack(null).commit();
+    public void goBattery() {
+        if (preventionClick() == true) {
+            getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestBatteryFragment()).addToBackStack(null).commit();
+        }
     }
 
     //도움횟수 버튼
     @OnClick(R.id.help_number_btn)
-    public void goHelpNum(){
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestHelpFragment()).addToBackStack(null).commit();
+    public void goHelpNum() {
+        if (preventionClick() == true) {
+            getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestHelpFragment()).addToBackStack(null).commit();
+        }
     }
 
     //로그아웃 버튼
     @OnClick(R.id.logout_btn)
-    public void logout(){
-        //AlertDialog 알람 사용
-        AlertDialog.Builder logoutAlert = new AlertDialog.Builder(getContext());
-        logoutAlert.setTitle("로그아웃");
-        logoutAlert.setMessage("로그아웃 하시겠습니까?");
-        logoutAlert.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+    public void logout() {
+        if (preventionClick() == true) {
+            //AlertDialog 알람 사용
+            AlertDialog.Builder logoutAlert = new AlertDialog.Builder(getContext());
+            logoutAlert.setTitle("로그아웃");
+            logoutAlert.setMessage("로그아웃 하시겠습니까?");
+            logoutAlert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                //로그아웃 보내기
-                Toast.makeText(getContext(),"로그아웃되었습니다.",Toast.LENGTH_SHORT).show();
-            }
-        }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+                    //로그아웃 보내기
+                    Toast.makeText(getContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
 
-        final AlertDialog dialog = logoutAlert.create();
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface args) {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-            }
-        });
-        dialog.show();
+            final AlertDialog dialog = logoutAlert.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface args) {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                }
+            });
+            dialog.show();
+        }
     }
 
+    //더블클릭 방지 함수
+    private boolean preventionClick(){
+        if(SystemClock.elapsedRealtime() - lastClickTime < 1000){
+            return false;
+        }else{
+            lastClickTime = SystemClock.elapsedRealtime();
+            return true;
+        }
+    }
 }
