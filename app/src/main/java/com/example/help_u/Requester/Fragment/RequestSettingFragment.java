@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//setting초기 부분
 public class RequestSettingFragment extends Fragment {
 
     @BindView(R.id.user_info_btn)
@@ -46,33 +47,40 @@ public class RequestSettingFragment extends Fragment {
         return v;
     }
 
+    //사용자 설정 버튼
     @OnClick(R.id.user_info_btn)
     public void goUserInfo(){
         getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
     }
 
+    //연락처 등록 버튼
     @OnClick(R.id.call_enroll_btn)
     public void goCallEnroll(){
         getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestEnrollFragment()).addToBackStack(null).commit();
     }
 
+    //메시지 작성 버튼
     @OnClick(R.id.write_message_btn)
     public void goWriteMessage(){
         getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestMessageFragment()).addToBackStack(null).commit();
     }
 
+    //배터리 설정 버튼
     @OnClick(R.id.battery_btn)
     public void goBattery(){
         getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestBatteryFragment()).addToBackStack(null).commit();
     }
 
+    //도움횟수 버튼
     @OnClick(R.id.help_number_btn)
     public void goHelpNum(){
         getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestHelpFragment()).addToBackStack(null).commit();
     }
 
+    //로그아웃 버튼
     @OnClick(R.id.logout_btn)
     public void logout(){
+        //AlertDialog 알람 사용
         AlertDialog.Builder logoutAlert = new AlertDialog.Builder(getContext());
         logoutAlert.setTitle("로그아웃");
         logoutAlert.setMessage("로그아웃 하시겠습니까?");

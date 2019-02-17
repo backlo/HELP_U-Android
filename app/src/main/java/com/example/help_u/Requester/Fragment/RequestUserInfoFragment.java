@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//사용자 정보 부분
 public class RequestUserInfoFragment extends Fragment {
 
     @BindView(R.id.userinfo_name_edit)

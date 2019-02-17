@@ -8,6 +8,7 @@ import android.view.Window;
 
 import com.example.help_u.R;
 
+//help 버튼 눌렀을때 뜨는 팝업 액티비티
 public class RequestPopupActivity extends Activity {
 
     @Override

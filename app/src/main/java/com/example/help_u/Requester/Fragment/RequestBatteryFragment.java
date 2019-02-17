@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
+//베터리 설정 부분
 public class RequestBatteryFragment extends Fragment {
 
     @BindView(R.id.radio_battery_group)

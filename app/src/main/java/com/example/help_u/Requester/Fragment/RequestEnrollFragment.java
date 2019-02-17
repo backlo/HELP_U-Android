@@ -14,6 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//연락처 등록 부분
 public class RequestEnrollFragment extends Fragment {
 
     @BindView(R.id.enroll_add)
