@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
+import android.widget.Button;
 
 import com.example.help_u.R;
 

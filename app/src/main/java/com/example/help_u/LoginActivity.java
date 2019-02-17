@@ -64,8 +64,13 @@ public class LoginActivity extends AppCompatActivity {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    
+
     @OnClick(R.id.sign_login)
+    public void login(){
+        //Intent i = new Intent(LoginActivity.this, RequestMainActivity.class );
+        Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+        startActivity(i);
+        finish();
     public void login() {
         String id = login_id.getText().toString();
         String password = login_password.getText().toString();
@@ -112,8 +117,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.sign_register)
-    public void register() {
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+    public void register(){
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class );
         startActivity(intent);
+        finish();
     }
 }
