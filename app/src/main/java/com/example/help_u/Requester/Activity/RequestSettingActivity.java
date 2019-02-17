@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import com.example.help_u.R;
 import com.example.help_u.Requester.Fragment.RequestSettingFragment;
 
+//setting은 fragment로 제작
 public class RequestSettingActivity extends AppCompatActivity {
 
     @Override
@@ -17,7 +18,6 @@ public class RequestSettingActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.setting_fragment, new RequestSettingFragment()).commit();
-
     }
 
 }

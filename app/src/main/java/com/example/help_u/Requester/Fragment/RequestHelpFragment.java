@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+// 도움횟수 부분
 public class RequestHelpFragment extends Fragment {
 
     @BindView(R.id.radio_help_group)

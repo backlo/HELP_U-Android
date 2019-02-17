@@ -25,18 +25,20 @@ public class RequestMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_request_main);
         ButterKnife.bind(this);
-
     }
 
+    //도움 요청 버튼
     @OnClick(R.id.help_btn)
     public void help_Btn(){
         Intent i = new Intent(this, RequestPopupActivity.class);
         startActivity(i);
     }
 
+    //119 버튼
     @OnClick(R.id.call_btn)
     public void call_119(){
         Intent intent = new Intent();
@@ -45,6 +47,7 @@ public class RequestMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //setting 버튼
     @OnClick(R.id.setting_btn)
     public void goSettingBtn(){
         Intent intent = new Intent(RequestMainActivity.this,RequestSettingActivity.class);

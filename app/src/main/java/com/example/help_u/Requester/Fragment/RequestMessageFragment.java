@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+//메시지 부분
 public class RequestMessageFragment extends Fragment {
 
 
