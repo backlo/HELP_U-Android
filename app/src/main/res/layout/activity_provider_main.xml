@@ -8,17 +8,15 @@
     android:padding="20dp"
     tools:context=".Provider.ProviderMainActivity">
 
+        <fragment
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/map_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:layout_gravity="center"/>
 
-    <TextView
-        android:text="지도"
-        android:textSize="50dp"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
-        android:gravity="center"
-        android:textColor="#000000"
-        android:background="#ffffff"/>
+
 
     <Button
         android:id="@+id/main_provider_setting_btn"
