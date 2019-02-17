@@ -3,16 +3,13 @@ package com.example.help_u.Requester.Fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.example.help_u.R;
@@ -21,6 +18,8 @@ import com.example.help_u.Requester.Adapter.EnrollAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 //연락처 등록 부분
 public class RequestEnrollFragment extends Fragment {
@@ -39,24 +38,21 @@ public class RequestEnrollFragment extends Fragment {
     EnrollAdapter enrollAdapter;
 
     public RequestEnrollFragment() { enrollAdapter = new EnrollAdapter(); }
-    Button del;
-    @BindView(R.id.enroll_commit)
-    Button enrollCommit;
-    @BindView(R.id.enroll_cancel)
-    Button enrollCancel;
-    @BindView(R.id.enroll_listview)
-    ListView listView;
-    EnrollAdapter enrollAdapter;
 
-    public RequestEnrollFragment() { enrollAdapter = new EnrollAdapter(); }
-
-
+    Retrofit retrofit;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_request_enroll, container, false);
         ButterKnife.bind(this, v);
         listView.setAdapter(enrollAdapter);
+
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://223.194.134.216:8080")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
         return v;
     }
 
@@ -65,11 +61,36 @@ public class RequestEnrollFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setData(ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
         startActivityForResult(intent, 0);
+
+        /*서버테스트용
+        RetrofitService service = retrofit.create(RetrofitService.class);
+        ArrayList<String> provider = new ArrayList<>();
+        provider.add("01000001234");
+        provider.add("01000001235");
+
+
+        HelperRegistration helperRegistration = new HelperRegistration("test1",provider);
+        service.helperRegistration(helperRegistration).enqueue(new Callback<ServerResponse>() {
+            @Override
+            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                if(response.isSuccessful()){
+                    ServerResponse serverResponse = response.body();
+                    Log.e("제공자 등록 response->",""+serverResponse.getMessage()+","+serverResponse.getResultCode());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServerResponse> call, Throwable t) {
+                    Log.e("제공자 등록 error->",""+t.toString());
+            }
+        });
+         */
     }
 
     @OnClick(R.id.enroll_del)
     public void delPhone(){
-       enrollAdapter.deleteItem();
+        enrollAdapter.deleteItem();
     }
 
     @OnClick(R.id.enroll_commit)
@@ -99,7 +120,6 @@ public class RequestEnrollFragment extends Fragment {
 
         cursor.close();
 
-        super.onActivityResult(requestCode,resultCode,data);
         super.onActivityResult(requestCode,resultCode,data);
     }
 

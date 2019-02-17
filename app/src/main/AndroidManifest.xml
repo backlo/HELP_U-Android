@@ -16,6 +16,27 @@
         <activity
             android:name=".Requester.Activity.RequestPopupActivity"
             android:theme="@android:style/Theme.Dialog" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBEcKbsJ_c21z64I6pLFGFyVusoG0AtlAQ" />
+        <service android:name=".Provider.Util.FCMService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".Provider.Util.FCM.FirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+
 
         <activity android:name=".Provider.ProviderSettingActivity"/>
         <activity android:name=".RegisterActivity" />

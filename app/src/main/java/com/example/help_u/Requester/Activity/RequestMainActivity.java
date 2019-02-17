@@ -2,11 +2,10 @@ package com.example.help_u.Requester.Activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.WindowManager;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
 
 import com.example.help_u.R;
@@ -15,7 +14,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RequestMainActivity extends AppCompatActivity {
 
@@ -37,15 +35,6 @@ public class RequestMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    //도움 요청 버튼
-    @OnClick(R.id.help_btn)
-    public void help_Btn(){
-        Intent i = new Intent(this, RequestPopupActivity.class);
-        startActivity(i);
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://223.194.134.216:8080")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
     //도움 요청 버튼
     @OnClick(R.id.help_btn)
@@ -53,6 +42,11 @@ public class RequestMainActivity extends AppCompatActivity {
         if(preventionClick() == true) {
             Intent i = new Intent(this, RequestPopupActivity.class);
             startActivity(i);
+
+//            retrofit = new Retrofit.Builder()
+//                    .baseUrl("http://223.194.134.216:8080")
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
         }
     }
 
@@ -69,11 +63,12 @@ public class RequestMainActivity extends AppCompatActivity {
 
     //setting 버튼
     @OnClick(R.id.setting_btn)
-    public void goSettingBtn(){
-        if(preventionClick() == true) {
+    public void goSettingBtn() {
+        if (preventionClick() == true) {
             Intent intent = new Intent(RequestMainActivity.this, RequestSettingActivity.class);
             startActivity(intent);
         }
+    }
 
     @OnClick(R.id.help_btn)
     public void sendHelp(){
@@ -107,6 +102,3 @@ public class RequestMainActivity extends AppCompatActivity {
 //            }
 //        });
     }
-
-
-}

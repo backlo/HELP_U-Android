@@ -5,14 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.help_u.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -74,10 +72,5 @@ public class EnrollAdapter extends BaseAdapter {
 
     public void deleteItem(){
         Log.e("Enroll >> ", "삭제");
-    }
-}
-    public void deleteItem(){
-        Log.e("Enroll >> ", "삭제");
-
     }
 }

@@ -5,7 +5,8 @@
     android:orientation="vertical">
 
     <TextView
-        android:background="#222222"
+        android:background="@color/colorMainTheme"
+        android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="사용자 정보"

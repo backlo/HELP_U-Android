@@ -2,36 +2,32 @@ package com.example.help_u;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.view.View;
-import android.view.WindowManager;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.help_u.Requester.Activity.RequestMainActivity;
-import com.example.help_u.Requester.Activity.RequestMainActivity;
-import com.example.help_u.model.Parameter;
-import com.example.help_u.model.UserInfo;
+import com.example.help_u.Provider.Data.Parameter;
+import com.example.help_u.Provider.Data.UserInfo;
+import com.example.help_u.Provider.ProviderMainActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private static long lastClickTime = 0;
     private static final int LOCATION_PER = 1;
     @BindView(R.id.sign_login)
     Button sign_login;
     @BindView(R.id.sign_register)
     Button sign_register;
     @BindView(R.id.login_id)
-    private static long lastClickTime = 0;
     EditText login_id;
     @BindView(R.id.login_password)
     EditText login_password;
@@ -50,8 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         final Gson responseGson = new GsonBuilder()
-                .registerTypeAdapter(Parameter.class , new Parameter.ParamSerializer())
-                .registerTypeAdapter(Parameter.class , new Parameter.ParamDeSerializer())
+                .registerTypeAdapter(Parameter.class, new Parameter.ParamSerializer())
+                .registerTypeAdapter(Parameter.class, new Parameter.ParamDeSerializer())
                 .create();
 
         retrofit = new Retrofit.Builder()
@@ -60,27 +56,22 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
 
     @OnClick(R.id.sign_login)
-    public void login(){
-        if(preventionClick() == true){
-            Intent i = new Intent(LoginActivity.this, RequestMainActivity.class );
+    public void login() {
+        if (preventionClick() == true) {
+            Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
             startActivity(i);
             finish();
-    public void login() {
-        String id = login_id.getText().toString();
-        String password = login_password.getText().toString();
 
-        UserInfo userInfo = new UserInfo(id, password);
+            /* 서버통신 테스트용 코드
+                String id = login_id.getText().toString();
+                String password = login_password.getText().toString();
+                UserInfo userInfo = new UserInfo(id, password);
 
-        //테스트용
-        Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
-        startActivity(i);
+                Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+                startActivity(i);
+             */
 
         /*RetrofitService service = retrofit.create(RetrofitService.class);
         service.login(userInfo).enqueue(new Callback<ServerResponse>() {
@@ -115,23 +106,24 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("로그인 error ->", "" + t.toString());
             }
         });*/
+            }
+        }
+
+
+        @OnClick(R.id.sign_register)
+        public void register () {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        //더블클릭 방지 함수
+        private boolean preventionClick () {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
+                return false;
+            } else {
+                lastClickTime = SystemClock.elapsedRealtime();
+                return true;
+            }
         }
     }
-
-    @OnClick(R.id.sign_register)
-    public void register(){
-        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class );
-        startActivity(intent);
-        finish();
-    }
-
-    //더블클릭 방지 함수
-    private boolean preventionClick(){
-        if(SystemClock.elapsedRealtime() - lastClickTime < 1000){
-            return false;
-        }else{
-            lastClickTime = SystemClock.elapsedRealtime();
-            return true;
-        }
-    }
-}

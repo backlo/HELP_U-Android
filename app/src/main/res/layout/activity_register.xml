@@ -156,6 +156,7 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/radio_man"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -163,6 +164,7 @@
                     android:text="남자"/>
 
                 <RadioButton
+                    android:id="@+id/radio_girl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
