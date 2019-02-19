@@ -13,15 +13,46 @@
         android:id="@+id/map_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="9"
         android:layout_gravity="center"/>
-    <Button
+
+
+
+    <LinearLayout
         android:id="@+id/main_provider_setting_btn"
         android:layout_margin="10dp"
+        android:background="@color/colorButtonTheme"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="설정"
-        android:textSize="40dp" />
+        android:orientation="horizontal"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/setting_image"/>
+
+        <TextView
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center|bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="35dp"
+            android:textColor="@color/colorWhite"
+            android:text="설정"/>
+
+    </LinearLayout>
+
+    <!--<Button-->
+        <!--android:id="@+id/main_provider_setting_btn"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="설정"-->
+        <!--android:textSize="40dp" />-->
 
 </LinearLayout>
