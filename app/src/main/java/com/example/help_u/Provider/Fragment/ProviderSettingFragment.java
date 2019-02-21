@@ -58,7 +58,7 @@ public class ProviderSettingFragment extends Fragment {
 
     @OnClick(R.id.provider_logout_btn)
     public void logOut(){
-        /*커스텀
+        /*커스텀해서 사용하려면 이걸로
          LogoutDialog dialog = new LogoutDialog(getContext());
         dialog.show();*/
 

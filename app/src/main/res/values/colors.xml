@@ -8,4 +8,8 @@
     <color name="colorMainTheme">#fa7868</color>
     <color name="colorButtonTheme">#ffbdb0</color>
     <color name="colorButtonTint">#555555</color>
+
+    <color name="disable_thumb_grey">#B6B6B6</color>
+    <color name="enable_thumb_theme">#E2DFDF</color>
+    <color name="enable_thumb_pink">#fa7868</color>
 </resources>

@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import com.example.help_u.Provider.Data.Parameter;
 import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.ProviderMainActivity;
-import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -71,9 +70,17 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_login)
     public void login() {
         if (preventionClick() == true) {
-            Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
+            //요청자 로그인
+            /*Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
+            startActivity(i);
+            finish();*/
+
+            //제공자 로그인
+            Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
             startActivity(i);
             finish();
+
+
 
             /* 서버통신 테스트용 코드
                 String id = login_id.getText().toString();
