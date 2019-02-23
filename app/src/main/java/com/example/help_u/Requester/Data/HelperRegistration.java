@@ -1,4 +1,4 @@
-package com.example.help_u.Provider.Data;
+package com.example.help_u.Requester.Data;
 
 import java.util.ArrayList;
 
