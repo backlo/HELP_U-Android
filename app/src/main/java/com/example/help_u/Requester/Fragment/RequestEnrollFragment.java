@@ -51,7 +51,6 @@ public class RequestEnrollFragment extends Fragment {
     private SharedPreferences sp;
 
     public RequestEnrollFragment() {
-        sp = getActivity().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
         enrollAdapter = new EnrollAdapter();
     }
 
@@ -63,9 +62,10 @@ public class RequestEnrollFragment extends Fragment {
         ButterKnife.bind(this, v);
         listView.setAdapter(enrollAdapter);
 
+        sp = getActivity().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://223.194.134.216:8080")
+                .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

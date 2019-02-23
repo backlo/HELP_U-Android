@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 public class HelperRegistration {
 
-    private String requester;
+    private String id;
     private ArrayList<String> provider;
 
-    public HelperRegistration(String requester, ArrayList<String> provider) {
-        this.requester = requester;
+    public HelperRegistration(String id, ArrayList<String> provider) {
+        this.id = id;
         this.provider = provider;
     }
 
     public String getRequester() {
-        return requester;
+        return id;
     }
 
-    public void setRequester(String requester) {
-        this.requester = requester;
+    public void setRequester(String id) {
+        this.id = id;
     }
 
     public ArrayList<String> getProvider() {

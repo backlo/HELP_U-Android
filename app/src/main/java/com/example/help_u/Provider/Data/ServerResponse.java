@@ -7,18 +7,18 @@ public class ServerResponse {
 
     private int resultCode;
     private String message;
-    private Parameter param;
+    private Object param;
 
     public ServerResponse(int resultCode, String message) {
         this.resultCode = resultCode;
         this.message = message;
     }
 
-    public Parameter getParam() {
+    public Object getParam() {
         return param;
     }
 
-    public void setParam(Parameter param) {
+    public void setParam(Object param) {
         this.param = param;
     }
 

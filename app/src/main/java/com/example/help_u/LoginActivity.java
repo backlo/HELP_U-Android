@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.help_u.Provider.Data.Parameter;
 import com.example.help_u.Provider.Data.Response.LoginResponse;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
@@ -51,6 +50,8 @@ public class LoginActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private UserInfo userInfo;
 
+    SharedPreferences sp;
+
     private final int REQUEST_WIDTH = 512;
     private final int REQUEST_HEIGHT = 512;
 
@@ -65,15 +66,9 @@ public class LoginActivity extends AppCompatActivity {
 
         userInfo = new UserInfo();
 
-
-        final Gson responseGson = new GsonBuilder()
-                .registerTypeAdapter(Parameter.class, new Parameter.ParamSerializer())
-                .registerTypeAdapter(Parameter.class, new Parameter.ParamDeSerializer())
-                .create();
-
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
-                .addConverterFactory(GsonConverterFactory.create(responseGson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
@@ -81,14 +76,11 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_login)
     public void login() {
         if (preventionClick() == true) {
-            //요청자 로그인
-
-
 
             // 서버통신 테스트용 코드
-            final String id = login_id.getText().toString();
-            final String password = login_password.getText().toString();
-            UserInfo userInfo = new UserInfo(id, password);
+            String id = login_id.getText().toString();
+            String password = login_password.getText().toString();
+            final UserInfo userInfo = new UserInfo(id, password);
 
             RetrofitService service = retrofit.create(RetrofitService.class);
             service.login(userInfo).enqueue(new Callback<ServerResponse>() {
@@ -98,26 +90,40 @@ public class LoginActivity extends AppCompatActivity {
                         ServerResponse serverResponse = response.body();
 
                         if (serverResponse != null) {
-                            Log.e("로그인  response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode() + "," + serverResponse.getParam());
+                            Log.e("로그인  response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode());
+                            Gson gson = new Gson();
+                            String json = gson.toJson(serverResponse.getParam());
+                            LoginResponse loginResponse = gson.fromJson(json, LoginResponse.class);
 
-                            //Parameter parameter = (LoginResponse)(serverResponse.getParam());
+                            if (serverResponse.getResultCode() == 0 ) {
+                                if("provider".equals(loginResponse.getUser_type())){
+                                    Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+                                    Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
 
-                            if (serverResponse.getResultCode() == -1) {
-                                Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
-                                Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
-                                startActivity(i);
-                                finish();
-                            } else {
-                                Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
+                                    Log.e("LoginActivity >> " , loginResponse.getUser_type() + userInfo.getId() +"");
 
-                                SharedPreferences sf = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sf.edit();
-                                editor.putString("id", id);
-                                editor.commit();
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("id", userInfo.getId());
+                                    editor.putString("usertype",loginResponse.getUser_type());
+                                    editor.commit();
 
-                                Toast.makeText(LoginActivity.this, "" + serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                startActivity(i);
-                                finish();
+                                    startActivity(i);
+                                    finish();
+                                }
+                                else if("requester".equals(loginResponse.getUser_type())){
+                                    Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
+
+                                    Log.e("LoginActivity >> " , loginResponse.getUser_type() + userInfo.getId() +"");
+
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("id", userInfo.getId());
+                                    editor.putString("usertype",loginResponse.getUser_type());
+                                    editor.commit();
+
+                                    Toast.makeText(LoginActivity.this, "" + serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    startActivity(i);
+                                    finish();
+                                }
 
                             }
                         }
@@ -139,6 +145,27 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sp = getSharedPreferences("Requester", MODE_PRIVATE);
+        Log.e("LoginActivity >> ", sp.getString("usertype",""));
+        if(!"".equals(sp.getString("id",""))){
+            if("requester".equals(sp.getString("usertype",""))){
+                Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
+                Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
+                startActivity(i);
+                finish();
+            } else {
+                Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+                Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
+                startActivity(i);
+                finish();
+            }
+
+        }
     }
 
     //더블클릭 방지 함수

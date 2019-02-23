@@ -1,7 +1,9 @@
 package com.example.help_u.Requester.Activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,15 +16,11 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.help_u.Provider.Data.Parameter;
-import com.example.help_u.Provider.Data.RequestHelp;
+import com.example.help_u.LoginActivity;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
 import com.example.help_u.Requester.Data.LocationRequest;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -51,6 +49,8 @@ public class RequestMainActivity extends AppCompatActivity {
     LocationManager lm;
     Retrofit retrofit;
 
+    SharedPreferences sp;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -65,15 +65,11 @@ public class RequestMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request_main);
         ButterKnife.bind(this);
 
-
-        final Gson responseGson = new GsonBuilder()
-                .registerTypeAdapter(Parameter.class, new Parameter.ParamSerializer())
-                .registerTypeAdapter(Parameter.class, new Parameter.ParamDeSerializer())
-                .create();
+        sp = getSharedPreferences("Requester", MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
-                .addConverterFactory(GsonConverterFactory.create(responseGson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
@@ -82,14 +78,14 @@ public class RequestMainActivity extends AppCompatActivity {
     public void help_Btn() {
 
         if (preventionClick() == true) {
-            Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
-            startActivity(i);
-        }
-
-        if(lon == 0 || lat == 0){
-            Log.e("RequestMain Help >> " , "위도 경도 0");
-        } else{
-            sendHelpRequest();
+            if (lon == 0 || lat == 0) {
+                Log.e("RequestMain Help >> ", "위도 경도 0");
+                Toast.makeText(getApplicationContext(), "다시 보내주세요!", Toast.LENGTH_SHORT).show();
+            } else {
+                sendHelpRequest();
+                Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
+                startActivity(i);
+            }
         }
 
     }
@@ -111,6 +107,7 @@ public class RequestMainActivity extends AppCompatActivity {
         if (preventionClick() == true) {
             Intent intent = new Intent(RequestMainActivity.this, RequestSettingActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -158,9 +155,12 @@ public class RequestMainActivity extends AppCompatActivity {
     }
 
     private void sendHelpRequest(){
-        LocationRequest locationRequest = new LocationRequest(lat,lon);
+        String id = sp.getString("id","");
+        Log.e("RequesterMain >> ", id );
+        LocationRequest locationRequest = new LocationRequest(""+lat+","+lon , id);
+
         RetrofitService service = retrofit.create(RetrofitService.class);
-        service.sendlocation(locationRequest).enqueue(new Callback<ServerResponse>() {
+        service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if(response.isSuccessful()){

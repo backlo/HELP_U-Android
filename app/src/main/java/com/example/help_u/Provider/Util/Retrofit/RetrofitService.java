@@ -23,11 +23,11 @@ public interface RetrofitService  {
     @POST("/helpu/user/login")
     Call<ServerResponse> login(@Body UserInfo userInfo);
 
-    @POST("/helpu/help/registration")
+    @POST("/helpu/provider/phones")
     Call<ServerResponse> helperRegistration(@Body HelperRegistration helperRegistration);
 
-    @POST("/dfd/df/dfdf/df")
-    Call<ServerResponse> sendlocation(@Body LocationRequest locationRequest);
+    @POST("/helpu/help/request")
+    Call<ServerResponse> sendLocation(@Body LocationRequest locationRequest);
 
 }
 

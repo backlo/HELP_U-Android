@@ -1,8 +1,6 @@
 package com.example.help_u.Provider.Data.Response;
 
-import com.example.help_u.Provider.Data.Parameter;
-
-public class LoginResponse implements Parameter {
+public class LoginResponse {
 
     private String user_type;
 
