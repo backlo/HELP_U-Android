@@ -21,7 +21,6 @@ import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
-import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -81,6 +80,9 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_login)
     public void login() {
         if (preventionClick() == true) {
+            //요청자 로그인
+
+
 
             // 서버통신 테스트용 코드
             final String id = login_id.getText().toString();

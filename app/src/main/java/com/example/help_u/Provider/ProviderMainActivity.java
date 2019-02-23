@@ -133,19 +133,11 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+        setDefaultLocation();
 
-        LatLng seoul = new LatLng(37.52487, 126.92723);
+        mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-        MarkerOptions makerOptions = new MarkerOptions();
-        makerOptions
-                .position(seoul)
-                .title("원하는 위치(위도, 경도)에 마커를 표시했습니다.");
-
-        // 마커를 생성한다.
-        mGoogleMap.addMarker(makerOptions);
-
-        //카메라를 여의도 위치로 옮긴다.
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(seoul));
     }
 
 
@@ -204,7 +196,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     public void onLocationChanged(Location location) {
         currentPosition
                 = new LatLng( location.getLatitude(), location.getLongitude());
-
 
         Log.d(TAG, "onLocationChanged : ");
 
@@ -299,7 +290,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     public void setCurrentLocation(Location location, String markerTitle, String markerSnippet) {
 
         mMoveMapByUser = false;
-
 
         if (currentMarker != null) currentMarker.remove();
 

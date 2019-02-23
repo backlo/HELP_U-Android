@@ -51,7 +51,7 @@ public class ProviderAlarmFragment extends Fragment {
 
     @OnCheckedChanged(R.id.sound_radio)
     public void soundRadioChecked(){
-        if(sound_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE){
+        if(sound_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE && aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
             aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         }
 
@@ -60,7 +60,7 @@ public class ProviderAlarmFragment extends Fragment {
 
     @OnCheckedChanged(R.id.vibrate_radio)
     public void vibrateRadioChecked(){
-        if(vibrate_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL){
+        if(vibrate_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL && aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
             aManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
         }
 
