@@ -11,11 +11,11 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.help_u.LoginActivity;
+import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
-public class FCMService extends FirebaseMessagingService {
+public class FireBaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String token) {
@@ -25,8 +25,9 @@ public class FCMService extends FirebaseMessagingService {
         super.onNewToken(token);
     }
 
+
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, ProviderMainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

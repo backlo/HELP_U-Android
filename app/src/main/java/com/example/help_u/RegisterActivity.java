@@ -9,6 +9,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.help_u.Provider.Data.UserInfo;
+import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
         userInfo = new UserInfo();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://223.194.134.216:8080")
+                .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.help_u.R;
@@ -23,11 +23,11 @@ import butterknife.OnClick;
 public class ProviderSettingFragment extends Fragment {
 
     @BindView(R.id.provider_user_info_btn)
-    Button userinfo_btn;
+    LinearLayout userinfo_btn;
     @BindView(R.id.provider_alarm_btn)
-    Button alarm_btn;
+    LinearLayout alarm_btn;
     @BindView(R.id.provider_logout_btn)
-    Button logout_btn;
+    LinearLayout logout_btn;
 
     private static long lastClickTime = 0;
 

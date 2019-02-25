@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.help_u.Provider.Data.Parameter;
 import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.ProviderMainActivity;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,15 +52,9 @@ public class LoginActivity extends AppCompatActivity {
 
         userInfo = new UserInfo();
 
-
-        final Gson responseGson = new GsonBuilder()
-                .registerTypeAdapter(Parameter.class, new Parameter.ParamSerializer())
-                .registerTypeAdapter(Parameter.class, new Parameter.ParamDeSerializer())
-                .create();
-
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://223.194.134.216:8080")
-                .addConverterFactory(GsonConverterFactory.create(responseGson))
+                .baseUrl(RetrofitService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
@@ -129,14 +121,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @OnClick(R.id.sign_register)
-    public void register () {
+    public void register() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
         finish();
     }
 
     //더블클릭 방지 함수
-    private boolean preventionClick () {
+    private boolean preventionClick() {
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
             return false;
         } else {
@@ -146,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //이미지 비트맵 줄여주기 함수
-    private void modifyBitmap(int image){
+    private void modifyBitmap(int image) {
         BitmapFactory.Options options = new BitmapFactory.Options();
 
         // inJustDecodeBounds = true일때 BitmapFactory.decodeResource는 리턴 x -> bitmap은 반환하지않고, options 변수에만 값이 대입
@@ -164,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
         imageView.setImageBitmap(bitmap);
     }
 
-    private int setImageSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
+    private int setImageSize(BitmapFactory.Options options, int requestWidth, int requestHeight) {
 
         //이미지 사이즈 원본에 대입
         int width = options.outWidth;
@@ -174,11 +166,11 @@ public class LoginActivity extends AppCompatActivity {
         int size = 1;
 
         //해상도 깨지지 않을 만큼의 요구되는 사이지 2로 나눠서 원본이미지를 나눔
-        while(requestWidth < width || requestHeight < height){
-            width = width/2;
-            height = height/2;
+        while (requestWidth < width || requestHeight < height) {
+            width = width / 2;
+            height = height / 2;
 
-            size = size*2;
+            size = size * 2;
         }
 
         return size;
