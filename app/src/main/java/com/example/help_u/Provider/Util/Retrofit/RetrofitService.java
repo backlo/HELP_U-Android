@@ -1,10 +1,11 @@
 package com.example.help_u.Provider.Util.Retrofit;
 
 
-import com.example.help_u.Provider.Data.HelperRegistration;
+import com.example.help_u.Requester.Data.HelperRegistration;
 import com.example.help_u.Provider.Data.LocationRequest;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
+import com.example.help_u.Requester.Data.LocationRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,8 +25,11 @@ public interface RetrofitService  {
     @POST("/helpu/user/login")
     Call<ServerResponse> login(@Body UserInfo userInfo);
 
-    @POST("/helpu/help/registration")
+    @POST("/helpu/provider/phones")
     Call<ServerResponse> helperRegistration(@Body HelperRegistration helperRegistration);
+
+    @POST("/helpu/help/request")
+    Call<ServerResponse> sendLocation(@Body LocationRequest locationRequest);
 
     @POST("/helpu/provider/location")
     Call<ServerResponse> sendLocation(@Body LocationRequest locationRequest);

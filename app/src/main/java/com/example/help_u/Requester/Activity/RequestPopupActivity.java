@@ -1,6 +1,10 @@
 package com.example.help_u.Requester.Activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -23,4 +27,6 @@ public class RequestPopupActivity extends Activity {
     public void onBackPressed() {
         return;
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.example.help_u.Provider.Data.Response;
 
-public class LoginResponse  {
+public class LoginResponse {
 
     private String user_type;
 

@@ -1,5 +1,6 @@
 package com.example.help_u.Requester.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.WindowManager;
@@ -20,4 +21,11 @@ public class RequestSettingActivity extends AppCompatActivity {
                 .add(R.id.setting_fragment, new RequestSettingFragment()).commit();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, RequestMainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

@@ -1,7 +1,11 @@
 package com.example.help_u.Requester.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -12,7 +16,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.help_u.LoginActivity;
 import com.example.help_u.R;
+import com.example.help_u.Requester.Activity.RequestSettingActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +43,7 @@ public class RequestSettingFragment extends Fragment {
     LinearLayout logoutBtn;
 
     private static long lastClickTime = 0;
+    SharedPreferences sp;
 
     public RequestSettingFragment() {
     }
@@ -47,6 +54,7 @@ public class RequestSettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_request_setting, container, false);
         ButterKnife.bind(this, v);
+        sp  = getActivity().getSharedPreferences("Requester", Context.MODE_PRIVATE);
         return v;
     }
 
@@ -104,6 +112,15 @@ public class RequestSettingFragment extends Fragment {
 
                     //로그아웃 보내기
                     Toast.makeText(getContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("usertype","");
+                    editor.clear();
+                    editor.commit();
+
+                    Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                    getActivity().finish();
+
                 }
             }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
                 @Override

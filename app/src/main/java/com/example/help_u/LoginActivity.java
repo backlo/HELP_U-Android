@@ -1,23 +1,33 @@
 package com.example.help_u;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.help_u.Provider.Data.Response.LoginResponse;
+import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
+import com.example.help_u.Requester.Activity.RequestMainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -37,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private UserInfo userInfo;
+
+    SharedPreferences sp;
 
     private final int REQUEST_WIDTH = 512;
     private final int REQUEST_HEIGHT = 512;
@@ -62,62 +74,68 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_login)
     public void login() {
         if (preventionClick() == true) {
-            //요청자 로그인
-            /*Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
-            startActivity(i);
-            finish();*/
 
-            //제공자 로그인
-            Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
-            startActivity(i);
-            finish();
+            // 서버통신 테스트용 코드
+            String id = login_id.getText().toString();
+            String password = login_password.getText().toString();
+            final UserInfo userInfo = new UserInfo(id, password);
 
+            RetrofitService service = retrofit.create(RetrofitService.class);
+            service.login(userInfo).enqueue(new Callback<ServerResponse>() {
+                @Override
+                public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                    if (response.isSuccessful()) {
+                        ServerResponse serverResponse = response.body();
 
+                        if (serverResponse != null) {
+                            Log.e("로그인  response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode());
+                            Gson gson = new Gson();
+                            String json = gson.toJson(serverResponse.getParam());
+                            LoginResponse loginResponse = gson.fromJson(json, LoginResponse.class);
 
-            /* 서버통신 테스트용 코드
-                String id = login_id.getText().toString();
-                String password = login_password.getText().toString();
-                UserInfo userInfo = new UserInfo(id, password);
+                            if (serverResponse.getResultCode() == 0 ) {
+                                if("provider".equals(loginResponse.getUser_type())){
+                                    Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+                                    Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
 
-                Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
-                startActivity(i);
-             */
+                                    Log.e("LoginActivity >> " , loginResponse.getUser_type() + userInfo.getId() +"");
 
-        /*RetrofitService service = retrofit.create(RetrofitService.class);
-        service.login(userInfo).enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                if (response.isSuccessful()) {
-                    ServerResponse serverResponse = response.body();
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("id", userInfo.getId());
+                                    editor.putString("usertype",loginResponse.getUser_type());
+                                    editor.commit();
 
-                    if (serverResponse != null) {
-                        Log.e("로그인  response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode()+","+serverResponse.getParam());
+                                    startActivity(i);
+                                    finish();
+                                }
+                                else if("requester".equals(loginResponse.getUser_type())){
+                                    Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
 
-                        Parameter parameter = (LoginResponse)(serverResponse.getParam());
+                                    Log.e("LoginActivity >> " , loginResponse.getUser_type() + userInfo.getId() +"");
 
-                        if (serverResponse.getResultCode() == 0 && ((LoginResponse) parameter).getUser_type().equals("provider")) {
-                            Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
-                            Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
-                            startActivity(i);
-                            finish();
-                        } else {
-                            Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
-                            Toast.makeText(LoginActivity.this, "" + serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            startActivity(i);
-                            finish();
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("id", userInfo.getId());
+                                    editor.putString("usertype",loginResponse.getUser_type());
+                                    editor.commit();
 
+                                    Toast.makeText(LoginActivity.this, "" + serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                    startActivity(i);
+                                    finish();
+                                }
+
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ServerResponse> call, Throwable t) {
-               Log.e("로그인 error ->", "" + t.toString());
-            }
-        });*/
+                @Override
+                public void onFailure(Call<ServerResponse> call, Throwable t) {
+                    Log.e("로그인 error ->", "" + t.toString());
+                }
+            });
         }
     }
+
 
 
     @OnClick(R.id.sign_register)
@@ -125,6 +143,27 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        sp = getSharedPreferences("Requester", MODE_PRIVATE);
+        Log.e("LoginActivity >> ", sp.getString("usertype",""));
+        if(!"".equals(sp.getString("id",""))){
+            if("requester".equals(sp.getString("usertype",""))){
+                Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
+                Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
+                startActivity(i);
+                finish();
+            } else {
+                Intent i = new Intent(LoginActivity.this, ProviderMainActivity.class);
+                Toast.makeText(LoginActivity.this, "로그인 완료", Toast.LENGTH_SHORT).show();
+                startActivity(i);
+                finish();
+            }
+
+        }
     }
 
     //더블클릭 방지 함수
