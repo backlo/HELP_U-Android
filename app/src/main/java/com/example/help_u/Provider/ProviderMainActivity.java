@@ -23,6 +23,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.help_u.Provider.Util.Service.MyService;
 import com.example.help_u.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -472,5 +473,25 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                 break;
         }
     }
+
+
+
+    //서비스시작
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("service at ondestroy","ondestroy 서비스 시작");
+        Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
+        startService(intent);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("service at ondestroy","onrestart 서비스 중지");
+        Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
+        stopService(intent);
+    }
+
 
 }

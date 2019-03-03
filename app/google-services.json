@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "912268897128",
-    "firebase_url": "https://fir-db-438b2.firebaseio.com",
-    "project_id": "fir-db-438b2",
-    "storage_bucket": "fir-db-438b2.appspot.com"
+    "project_number": "993912061678",
+    "firebase_url": "https://helpu-231806.firebaseio.com",
+    "project_id": "helpu-231806",
+    "storage_bucket": "helpu-231806.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:912268897128:android:137cc4dda70a14bd",
+        "mobilesdk_app_id": "1:993912061678:android:137cc4dda70a14bd",
         "android_client_info": {
           "package_name": "com.example.help_u"
         }
       },
       "oauth_client": [
         {
-          "client_id": "912268897128-2q9qgibgrpan8bib5dt9035uofm3cnfj.apps.googleusercontent.com",
+          "client_id": "993912061678-iuiabvbmrnk9kkj944ekq9dqvbanfj2m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.help_u",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "912268897128-p2e60ofgpiute2re21u5slm9hr9cu2v3.apps.googleusercontent.com",
+          "client_id": "993912061678-k9s65dvv4imbhqtccs5lkei4i6ch6st4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCHHoWo1M6Pk0BXM7QZdHGbKhF1QUE3y5k"
+          "current_key": "AIzaSyAFzkyRfF1uTlgTZBapaqhdXa2gPLHSaz8"
         }
       ],
       "services": {
@@ -40,41 +40,10 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "912268897128-p2e60ofgpiute2re21u5slm9hr9cu2v3.apps.googleusercontent.com",
+              "client_id": "993912061678-k9s65dvv4imbhqtccs5lkei4i6ch6st4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:912268897128:android:1f93c6ef22b84bee",
-        "android_client_info": {
-          "package_name": "com.example.parkjunghun.fiebasedb"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "912268897128-p2e60ofgpiute2re21u5slm9hr9cu2v3.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCHHoWo1M6Pk0BXM7QZdHGbKhF1QUE3y5k"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

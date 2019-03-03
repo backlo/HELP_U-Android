@@ -19,32 +19,98 @@
         android:orientation="vertical"
         android:padding="50dp">
 
-        <Button
+
+        <LinearLayout
             android:id="@+id/provider_user_info_btn"
+            android:layout_margin="10dp"
+            android:background="@color/colorButtonTheme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="사용자 정보"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
-        <Button
+
+            <ImageView
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/info"/>
+
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:gravity="center|bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="26sp"
+                android:textColor="@color/colorWhite"
+                android:text="사용자 정보"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
             android:id="@+id/provider_alarm_btn"
+            android:layout_margin="10dp"
+            android:background="@color/colorButtonTheme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="알림 설정"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
-        <Button
+
+            <ImageView
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_alarm_on_black_24dp"/>
+
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:gravity="center|bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="30dp"
+                android:textColor="@color/colorWhite"
+                android:text="알림 설정"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
             android:id="@+id/provider_logout_btn"
+            android:layout_margin="10dp"
+            android:background="@color/colorButtonTheme"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="로그아웃"
-            android:textSize="30dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"/>
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+
+            <ImageView
+                android:layout_margin="15dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/logout_image"/>
+
+            <TextView
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:gravity="center|bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="30sp"
+                android:textColor="@color/colorWhite"
+                android:text="로그아웃"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

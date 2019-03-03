@@ -27,19 +27,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBEcKbsJ_c21z64I6pLFGFyVusoG0AtlAQ" />
-        <service android:name=".Provider.Util.FCMService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service
-            android:name=".Provider.Util.FCM.FirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
 
-
+        <service android:name=".Provider.Util.Service.MyService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
 
         <activity android:name=".Provider.ProviderSettingActivity"/>
         <activity android:name=".RegisterActivity" />
@@ -53,6 +45,23 @@
         <activity android:name=".Requester.Activity.RequestMainActivity" />
         <activity android:name=".Requester.Activity.RequestSettingActivity" />
         <activity android:name=".Provider.ProviderMainActivity" />
+
+        <service android:name=".Provider.Util.FireBaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".Provider.Util.FCM.FirebaseInstanceIDService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
