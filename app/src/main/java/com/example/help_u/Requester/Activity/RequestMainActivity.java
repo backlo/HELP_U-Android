@@ -19,6 +19,7 @@ import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
+import com.example.help_u.Requester.Data.LocationRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,7 +63,6 @@ public class RequestMainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
-
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -103,7 +103,6 @@ public class RequestMainActivity extends AppCompatActivity {
         if (preventionClick() == true) {
             Intent intent = new Intent(RequestMainActivity.this, RequestSettingActivity.class);
             startActivity(intent);
-            finish();
         }
     }
 
@@ -119,13 +118,17 @@ public class RequestMainActivity extends AppCompatActivity {
 
     public void locationService() {
 
+        Log.e("MainActiviy >> " ,"locationService시작");
+
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
+
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();
                     lat = location.getLatitude();
+                    Log.e("MainActiviy >> " ,lon +","+lat);
                 }
 
                 @Override
@@ -152,11 +155,21 @@ public class RequestMainActivity extends AppCompatActivity {
 
     private void sendHelpRequest(){
         String id = sp.getString("id","");
-        Log.e("RequesterMain >> ", id );
-        LocationRequest_provider locationRequestProvider = new LocationRequest_provider(""+lat+","+lon , id);
+        String message = sp.getString("message","");
+        int count = sp.getInt("helpcount",0);
+
+        if("".equals(message)){
+            message="도와주세요!";
+        }
+        if(count == 0){
+            count = 5;
+        }
+
+        Log.e("RequesterMain >> ", id +", " + message + ", " + count );
+        LocationRequest locationRequest = new LocationRequest(""+lat+","+lon,id,message,count);
 
         RetrofitService service = retrofit.create(RetrofitService.class);
-        service.sendLocation(locationRequestProvider).enqueue(new Callback<ServerResponse>() {
+        service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if(response.isSuccessful()){
