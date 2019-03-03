@@ -5,10 +5,19 @@ public class ServerResponse {
 
     private int resultCode;
     private String message;
+    private Object param;
 
     public ServerResponse(int resultCode, String message) {
         this.resultCode = resultCode;
         this.message = message;
+    }
+
+    public Object getParam() {
+        return param;
+    }
+
+    public void setParam(Object param) {
+        this.param = param;
     }
 
     public int getResultCode() {

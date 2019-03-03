@@ -12,7 +12,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 
-import com.example.help_u.Provider.Data.LocationRequest;
+import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 
@@ -27,7 +27,7 @@ public class MyService extends Service {
     NetworkService thread1;
     double lon;
     double lat;
-    LocationRequest locationRequest;
+    LocationRequest_provider locationRequestProvider;
     Retrofit retrofit;
     RetrofitService retrofitService;
 
@@ -76,10 +76,10 @@ public class MyService extends Service {
         @Override
         public void handleMessage(Message msg) {
             Log.e("locationservicehandler", "handler");
-            LocationManager lm = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
             try {
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, new LocationListener() {
+                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, new LocationListener() {
                     @Override
                     public void onLocationChanged(Location location) {
                         lon = location.getLongitude();
@@ -108,15 +108,15 @@ public class MyService extends Service {
             if (lat != 0 && lon != 0) {
                 sendLocinfo(lat, lon);
             }
-            sendLocinfo(lat, lon);
+            //sendLocinfo(lat, lon);
         }
 
         public void sendLocinfo(double lat, double lon){
             RetrofitService retrofitService = retrofit.create(RetrofitService.class);
             Log.e("service","sendlocinfo");
 
-            locationRequest = new LocationRequest("test2", "12312313");
-            retrofitService.sendLocation(locationRequest).enqueue(new retrofit2.Callback<ServerResponse>() {
+            locationRequestProvider = new LocationRequest_provider("test2", "12312313");
+            retrofitService.sendLocation_Provider(locationRequestProvider).enqueue(new retrofit2.Callback<ServerResponse>() {
                 @Override
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                     if(response.isSuccessful()){
@@ -126,6 +126,7 @@ public class MyService extends Service {
                 }
                 @Override
                 public void onFailure(Call<ServerResponse> call, Throwable t) {
+                    Log.e("service","send loc error->"+t.toString());
                 }
             });
         }
