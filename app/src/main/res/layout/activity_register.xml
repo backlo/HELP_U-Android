@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:context=".RegisterActivity">
     <TextView
-        android:background="#222222"
+        android:background="@color/colorMainTheme"
+        android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="회원가입"

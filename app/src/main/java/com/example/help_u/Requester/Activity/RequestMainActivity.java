@@ -1,6 +1,5 @@
 package com.example.help_u.Requester.Activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,13 +15,10 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.help_u.LoginActivity;
+import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
-import com.example.help_u.Requester.Data.LocationRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -157,10 +153,10 @@ public class RequestMainActivity extends AppCompatActivity {
     private void sendHelpRequest(){
         String id = sp.getString("id","");
         Log.e("RequesterMain >> ", id );
-        LocationRequest locationRequest = new LocationRequest(""+lat+","+lon , id);
+        LocationRequest_provider locationRequestProvider = new LocationRequest_provider(""+lat+","+lon , id);
 
         RetrofitService service = retrofit.create(RetrofitService.class);
-        service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
+        service.sendLocation(locationRequestProvider).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if(response.isSuccessful()){

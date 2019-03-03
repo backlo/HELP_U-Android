@@ -2,7 +2,7 @@ package com.example.help_u.Provider.Data;
 
 import com.google.gson.annotations.SerializedName;
 
-public class LocationRequest {
+public class LocationRequest_provider {
 
     @SerializedName("provider")
     private String provider;
@@ -25,7 +25,7 @@ public class LocationRequest {
         this.location = location;
     }
 
-    public LocationRequest(String provider, String location) {
+    public LocationRequest_provider(String provider, String location) {
         this.provider = provider;
         this.location = location;
     }
