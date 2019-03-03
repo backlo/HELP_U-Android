@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 
 public interface RetrofitService  {
 
-    String URL = "http://192.168.0.22:8080";
+    String URL = "http://192.168.1.161:8080";
 
     @POST("/helpu/user/registration")
     Call<ServerResponse> sendUserInfo(@Body UserInfo userInfo);

@@ -1,6 +1,5 @@
 package com.example.help_u;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -22,7 +21,6 @@ import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
