@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.R;
@@ -82,48 +81,50 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
         }
 
         String data_location = remoteMessage.getData().get("location");
-        Log.e("noti data", "" + data_location);
-        Log.e("noti data->getbody", "" + remoteMessage.getData());
-        Log.e("noti data->gettitle", "" + remoteMessage.getNotification().getBody());
 
-        getCurrentAddress(data_location);
+        if(remoteMessage.getData() != null){
+            getCurrentAddress(data_location);
+        }
 
         super.onMessageReceived(remoteMessage);
     }
 
     public String getCurrentAddress(String latlng) {
 
+        double lat;
+        double lon;
         //지오코더... GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        if (latlng != null) {
+            String locData[] = latlng.split(",");
+            lat = Double.parseDouble(locData[0]);
+            lon = Double.parseDouble(locData[1]);
 
-        String locData[] = latlng.split(",");
-        double lat = Double.parseDouble(locData[0]);
-        double lon = Double.parseDouble(locData[1]);
 
-        List<Address> addresses;
+            List<Address> addresses;
 
-        try {
-            addresses = geocoder.getFromLocation(
-                    lat,
-                    lon,
-                    1);
-        } catch (IOException ioException) {
-            //네트워크 문제
-            Toast.makeText(this, "지오코더 서비스 사용불가", Toast.LENGTH_LONG).show();
-            return "지오코더 서비스 사용불가";
-        } catch (IllegalArgumentException illegalArgumentException) {
-            Toast.makeText(this, "잘못된 GPS 좌표", Toast.LENGTH_LONG).show();
-            return "잘못된 GPS 좌표";
+            try {
+                addresses = geocoder.getFromLocation(
+                        lat,
+                        lon,
+                        1);
+            } catch (IOException ioException) {
+                //네트워크 문제
+                return "지오코더 서비스 사용불가";
+            } catch (IllegalArgumentException illegalArgumentException) {
+                return "잘못된 GPS 좌표";
+            }
+
+            if (addresses == null || addresses.size() == 0) {
+                return "주소 미발견";
+
+            } else {
+                Address address = addresses.get(0);
+                Log.e("noti", "" + address.getAddressLine(0));
+                return address.getAddressLine(0);
+            }
+
         }
-
-        if (addresses == null || addresses.size() == 0) {
-            Toast.makeText(this, "주소 미발견", Toast.LENGTH_LONG).show();
-            return "주소 미발견";
-
-        } else {
-            Address address = addresses.get(0);
-            Log.e("noti", "" + address.getAddressLine(0));
-            return address.getAddressLine(0);
-        }
+        return "";
     }
 }

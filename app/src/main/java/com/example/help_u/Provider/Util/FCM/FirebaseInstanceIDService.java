@@ -14,7 +14,6 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         Log.e("fcm",""+FirebaseInstanceId.getInstance().getInstanceId());
         sendRegistrationToServer(refreshedToken);
-
     }
 
     private void sendRegistrationToServer(String token) {
