@@ -98,7 +98,6 @@ public class RequestEnrollFragment extends Fragment {
             checked = listView.getCheckedItemPosition();
             String number = (String) adapter.getItem(checked);
 
-
             String id = sp.getString("id", "");
 
             final RetrofitService service = retrofit.create(RetrofitService.class);
@@ -200,7 +199,6 @@ public class RequestEnrollFragment extends Fragment {
 
                     for (int i = 0; i < phonesResponse.getPhones().size(); i++) {
                         Log.e("EnrollFragment >> ", "" + phonesResponse.getPhones().get(i));
-//                        enrollAdapter.addItem(phonesResponse.getPhones().get(i));
                         items.add(phonesResponse.getPhones().get(i));
                     }
                     listView.setAdapter(adapter);

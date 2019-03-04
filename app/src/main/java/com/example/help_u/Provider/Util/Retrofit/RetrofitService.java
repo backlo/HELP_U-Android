@@ -6,7 +6,6 @@ import com.example.help_u.Provider.Data.NotificationRequest;
 import com.example.help_u.Requester.Data.AddNumber;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
-import com.example.help_u.Requester.Data.HelperRegistration;
 import com.example.help_u.Requester.Data.GetUserInfo;
 import com.example.help_u.Requester.Data.HelpRegistration;
 import com.example.help_u.Requester.Data.LocationRequest;
@@ -19,7 +18,7 @@ import retrofit2.http.POST;
 
 public interface RetrofitService  {
 
-    String URL = "http://223.194.156.245:8080";
+    String URL = "http://223.194.134.194:8080";
 
     @POST("/helpu/user/registration")
     Call<ServerResponse> sendUserInfo(@Body UserInfo userInfo);
@@ -44,11 +43,11 @@ public interface RetrofitService  {
 
     @POST("/helpu/help/accept")//provider requester 둘다 아이디
     Call<ServerResponse> atReadNotification(@Body NotificationRequest notificationRequest);
+
     @POST("/helpu/help/registration")
     Call<ServerResponse> addNumber(@Body AddNumber addNumber);
 
     @POST("/helpu/help/remove")
-
     Call<ServerResponse> removeNumber(@Body RemoveNumber removeNumber);
 
     @POST("/helpu/user/info")

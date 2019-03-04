@@ -1,8 +1,10 @@
-package com.example.help_u.Provider.Util.Service;
+package com.example.help_u.Requester.Service;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,69 +13,69 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
+import com.example.help_u.Requester.Data.LocationRequest;
 
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MyService extends Service {
 
-    BackgroundServiceThread thread;
-    NetworkService thread1;
+public class MyServiceRequester extends Service {
+
+    SharedPreferences sp;
+    BackgroundServiceThreadRequester thread;
     double lon;
     double lat;
-    LocationRequest_provider locationRequestProvider;
     Retrofit retrofit;
-    RetrofitService retrofitService;
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
-    //서비스 실행시 한번 실행
     @Override
     public void onCreate() {
+        super.onCreate();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-        super.onCreate();
     }
 
-    //백그라운드에서 실행되는 동작 구현(네트워크)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("service!@!@!@", "background ok");
-        locationServiceHandler handler = new locationServiceHandler();
+        Log.e("Requester Service >>", "시작");
 
-        thread = new BackgroundServiceThread(handler, getApplicationContext());
+        sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+        int batteryAmount = sp.getInt("batteryAmount", 0);
+        LocationRequesterServiceHandler handler = new LocationRequesterServiceHandler();
 
+        thread = new BackgroundServiceThreadRequester(handler, getApplicationContext(), batteryAmount);
         thread.start();
+
         return START_STICKY;
     }
 
-    //서비스가 종료될 때 실행되는 메소드 (앱이 다시 살때)
     @Override
     public void onDestroy() {
         thread.stopForever();
         thread = null;
+
+        Log.e("Requester Service >>", "종료");
         super.onDestroy();
     }
 
-
-    class locationServiceHandler extends Handler {
+    class LocationRequesterServiceHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            Log.e("locationservicehandler", "handler");
-            LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+            Log.e("requester handler >> ", "handler 시작");
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
             try {
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, new LocationListener() {
@@ -102,28 +104,46 @@ public class MyService extends Service {
                 e.printStackTrace();
             }
             Log.e("service loc >> ", lat + "," + lon);
-            if (lat != 0 && lon != 0) {
-                sendLocinfo(lat, lon);
+            if (lat == 0 && lon == 0) {
+                Log.e("requester handler >> ", "sendBatteryMessage시작");
+                sendBatteryMessage(lat, lon);
             }
         }
 
-        public void sendLocinfo(double lat, double lon){
+        public void sendBatteryMessage(double lat, double lon) {
+
+            String id = sp.getString("id", "");
+            String message = sp.getString("message", "");
+            int count = sp.getInt("helpcount", 0);
+
+            if ("".equals(message)) {
+                message = "도와주세요!";
+            }
+            if (count == 0) {
+                count = 5;
+            }
+
+            Log.e("requester handler >> ", "id: " + id + ", message: " + message + ", count: " + count + ", (" + lat + ", " + lon + ")");
+
             RetrofitService retrofitService = retrofit.create(RetrofitService.class);
 
-            locationRequestProvider = new LocationRequest_provider("test2", String.valueOf(lat)+","+String.valueOf(lon));
-            retrofitService.sendLocation_Provider(locationRequestProvider).enqueue(new retrofit2.Callback<ServerResponse>() {
+            LocationRequest locationRequest = new LocationRequest("" + lat + "," + lon, id, message, count);
+            retrofitService.sendLocation(locationRequest).enqueue(new retrofit2.Callback<ServerResponse>() {
                 @Override
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         ServerResponse body = response.body();
-                        Log.e("service","body"+body.getResultCode());
+                        Log.e("service", "body" + body.getResultCode());
                     }
                 }
+
                 @Override
                 public void onFailure(Call<ServerResponse> call, Throwable t) {
-                    Log.e("service","send loc error->"+t.toString());
+                    Log.e("service", "send loc error->" + t.toString());
+                    Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
+
 }

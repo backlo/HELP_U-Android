@@ -130,7 +130,13 @@ public class RequestUserInfoFragment extends Fragment {
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
                 Log.e("UserInfo값 error->", "" + t.toString());
-                Toast.makeText(getContext(), "서버에 연결할수 없습니다.", Toast.LENGTH_SHORT).show();
+                try{
+                    Toast.makeText(getContext(), "서버에 연결할수 없습니다.", Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e){
+                    Log.e("UserInfo error->", "NullPointException 발생");
+                    Toast.makeText(getContext(), "서버에 연결할수 없습니다..", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

@@ -68,7 +68,7 @@ public class RequestHelpFragment extends Fragment {
         rb = (RadioButton) getActivity().findViewById(id);
 
         SharedPreferences.Editor editor = sp.edit();
-        int count = Integer.valueOf(rb.getText().toString().substring(0,1));
+        int count = Integer.valueOf(rb.getText().toString().replace("회",""));
         editor.putInt("helpcount",count);
 
         editor.commit();
