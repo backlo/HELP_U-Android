@@ -15,7 +15,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
@@ -123,7 +122,7 @@ public class RequestMainActivity extends AppCompatActivity {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();

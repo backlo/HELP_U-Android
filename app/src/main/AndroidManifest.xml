@@ -42,8 +42,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Requester.Activity.RequestMainActivity" />
+        <activity android:name=".Requester.Activity.RequestMainActivity" >
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_2" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".Requester.Activity.RequestSettingActivity" />
+
         <activity android:name=".Provider.ProviderMainActivity" >
             <intent-filter>
                 <action android:name="OPEN_ACTIVITY_1" />
