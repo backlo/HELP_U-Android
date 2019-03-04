@@ -4,10 +4,14 @@ public class LocationRequest {
 
     private String location;
     private String requester;
+    private String message;
+    private int count;
 
-    public LocationRequest(String location, String requester) {
+    public LocationRequest(String location, String requester, String message, int count) {
         this.location = location;
         this.requester = requester;
+        this.message = message;
+        this.count = count;
     }
 
     public String getLocation() {
@@ -24,5 +28,21 @@ public class LocationRequest {
 
     public void setRequester(String requester) {
         this.requester = requester;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

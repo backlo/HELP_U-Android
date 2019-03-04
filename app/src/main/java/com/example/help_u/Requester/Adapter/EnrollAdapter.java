@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.help_u.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class EnrollAdapter extends BaseAdapter {
 
-    HashMap<String, String> listItem = new HashMap<>();
+    ArrayList<EnrollItem> listItem = new ArrayList<>();
 
     @BindView(R.id.enroll_listview_name)
     TextView enrollName;
@@ -27,7 +28,6 @@ public class EnrollAdapter extends BaseAdapter {
     @BindView(R.id.enroll_check)
     CheckBox enrollCheck;
 
-    private static String key;
 
     public EnrollAdapter() {  }
 
@@ -49,7 +49,7 @@ public class EnrollAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
+        final int pos = position;
         Context context = parent.getContext();
 
         if (convertView == null) {
@@ -59,15 +59,20 @@ public class EnrollAdapter extends BaseAdapter {
 
         }
 
-        enrollName.setText(key);
-        enrollNumber.setText(listItem.get(key));
+        EnrollItem enrollItem = listItem.get(position);
+
+        enrollNumber.setText(enrollItem.getNumber());
 
         return convertView;
     }
 
-    public void addItem(String name, String number) {
-        key = name;
-        listItem.put(key,number);
+    public void addItem(String number) {
+        EnrollItem item = new EnrollItem();
+
+        item.setNumber(number);
+
+        listItem.add(item);
+
     }
 
     public void deleteItem(){
