@@ -31,8 +31,6 @@ public class MyService extends Service {
     Retrofit retrofit;
     RetrofitService retrofitService;
 
-
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -108,20 +106,18 @@ public class MyService extends Service {
             if (lat != 0 && lon != 0) {
                 sendLocinfo(lat, lon);
             }
-            //sendLocinfo(lat, lon);
         }
 
         public void sendLocinfo(double lat, double lon){
             RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-            Log.e("service","sendlocinfo");
 
-            locationRequestProvider = new LocationRequest_provider("test2", "12312313");
+            locationRequestProvider = new LocationRequest_provider("test2", String.valueOf(lat)+","+String.valueOf(lon));
             retrofitService.sendLocation_Provider(locationRequestProvider).enqueue(new retrofit2.Callback<ServerResponse>() {
                 @Override
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                     if(response.isSuccessful()){
                         ServerResponse body = response.body();
-                        Log.e("dfdsfasdf",""+body.getMessage()+","+body.getResultCode());
+                        Log.e("service","body"+body.getResultCode());
                     }
                 }
                 @Override

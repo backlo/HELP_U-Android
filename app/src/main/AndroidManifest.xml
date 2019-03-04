@@ -44,9 +44,14 @@
         </activity>
         <activity android:name=".Requester.Activity.RequestMainActivity" />
         <activity android:name=".Requester.Activity.RequestSettingActivity" />
-        <activity android:name=".Provider.ProviderMainActivity" />
+        <activity android:name=".Provider.ProviderMainActivity" >
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_1" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-        <service android:name=".Provider.Util.FireBaseMessagingService"
+        <service android:name=".Provider.Util.FCM.FireBaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

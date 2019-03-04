@@ -38,8 +38,16 @@ public class ProviderAlarmFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_provider_alarm, container, false);
         ButterKnife.bind(this,view);
-        aManager = (AudioManager)getContext().getSystemService(Context.AUDIO_SERVICE);
+        aManager = (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
 
+        if(aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE){
+            sound_radio.setChecked(true);
+        }else if(aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL){
+            vibrate_radio.setChecked(true);
+        }else{
+            vibrate_radio.setChecked(false);
+            vibrate_radio.setChecked(false);
+        }
 
         return view;
     }
@@ -51,7 +59,7 @@ public class ProviderAlarmFragment extends Fragment {
 
     @OnCheckedChanged(R.id.sound_radio)
     public void soundRadioChecked(){
-        if(sound_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE && aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
+        if(sound_radio.isChecked() || aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE || aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
             aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         }
 
@@ -60,7 +68,7 @@ public class ProviderAlarmFragment extends Fragment {
 
     @OnCheckedChanged(R.id.vibrate_radio)
     public void vibrateRadioChecked(){
-        if(vibrate_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL && aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
+        if(vibrate_radio.isChecked() || aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL || aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
             aManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
         }
 

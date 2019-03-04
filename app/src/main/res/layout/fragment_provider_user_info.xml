@@ -29,10 +29,10 @@
             android:text="이 름 :"/>
 
         <TextView
+            android:id="@+id/userinfo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="dummydata"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -53,10 +53,10 @@
             android:text="주 소 :"/>
 
         <TextView
+            android:id="@+id/userinfo_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="dummydata"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -76,10 +76,10 @@
             android:text="전화번호 :"/>
 
         <TextView
+            android:id="@+id/userinfo_phonenumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="dummydata"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -99,10 +99,10 @@
             android:text="등 급 :"/>
 
         <TextView
+            android:id="@+id/userinfo_grade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="dummydata"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -122,10 +122,10 @@
             android:text="포인트:"/>
 
         <TextView
+            android:id="@+id/userinfo_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="dummydata"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 
@@ -146,10 +146,10 @@
             android:text="횟 수 :"/>
 
         <TextView
+            android:id="@+id/userinfo_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="dummydata"/>
+            android:textSize="25sp" />
 
     </LinearLayout>
 

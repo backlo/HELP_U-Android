@@ -14,14 +14,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.help_u.Provider.Data.Response.LoginResponse;
+import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.Requester.Activity.RequestMainActivity;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -68,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.sign_login)
     public void login() {
 
-        /*if (preventionClick() == true) {
+        if (preventionClick() == true) {
 
             // 서버통신 테스트용 코드
             String id = login_id.getText().toString();
@@ -128,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("로그인 error ->", "" + t.toString());
                 }
             });
-        }*/
+        }
     }
 
 

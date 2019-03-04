@@ -10,6 +10,7 @@ public class UserInfo {
     private int gender;
     private String user_type;
     private String token;
+    private String address;
 
     public UserInfo() {
     }
@@ -23,7 +24,7 @@ public class UserInfo {
         this.password = password;
     }
 
-    public UserInfo(String id, String password, String name, String phone, String personal_no, int gender, String user_type, String token) {
+    public UserInfo(String id, String password, String name, String phone, String personal_no, int gender, String user_type, String address, String token) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -31,7 +32,16 @@ public class UserInfo {
         this.personal_no = personal_no;
         this.gender = gender;
         this.user_type = user_type;
+        this.address = address;
         this.token = token;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getId() {

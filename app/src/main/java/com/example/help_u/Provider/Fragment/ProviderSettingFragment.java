@@ -1,7 +1,10 @@
 package com.example.help_u.Provider.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -14,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.help_u.LoginActivity;
+import com.example.help_u.Provider.Util.Service.MyService;
 import com.example.help_u.R;
 
 import butterknife.BindView;
@@ -30,6 +35,7 @@ public class ProviderSettingFragment extends Fragment {
     LinearLayout logout_btn;
 
     private static long lastClickTime = 0;
+    SharedPreferences sp;
 
     public ProviderSettingFragment() {
     }
@@ -39,6 +45,7 @@ public class ProviderSettingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_provider_setting, container, false);
         ButterKnife.bind(this, view);
+        sp  = getActivity().getSharedPreferences("Requester", Context.MODE_PRIVATE);
         return view;
     }
 
@@ -73,6 +80,18 @@ public class ProviderSettingFragment extends Fragment {
 
                     //로그아웃 보내기
                     Toast.makeText(getContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("usertype","");
+                    editor.clear();
+                    editor.commit();
+
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MyService.class);
+                    getActivity().stopService(intent);
+
+                    Intent logoutIntent = new Intent(getActivity(), LoginActivity.class);
+                    logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(logoutIntent);
+
                 }
             }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
                 @Override

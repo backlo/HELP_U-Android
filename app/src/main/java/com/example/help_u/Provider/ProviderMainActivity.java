@@ -2,10 +2,13 @@ package com.example.help_u.Provider;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -23,6 +26,9 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.help_u.Provider.Data.NotificationRequest;
+import com.example.help_u.Provider.Data.ServerResponse;
+import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.Provider.Util.Service.MyService;
 import com.example.help_u.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -47,6 +53,11 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProviderMainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -70,7 +81,8 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             .setInterval(2000)
             .setFastestInterval(1000);
 
-
+    Retrofit retrofit;
+    SharedPreferences sp;
 
     @BindView(R.id.main_provider_setting_btn)
     LinearLayout setting_btn;
@@ -80,6 +92,73 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_main);
         ButterKnife.bind(this);
+        sp = getApplicationContext().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
+        stopService(intent);
+
+        final NotificationRequest notificationRequest = new NotificationRequest();
+        final String id = sp.getString("id", "");
+
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Log.e("noti intent", "" + getIntent().getStringExtra("location") + "" + getIntent().getStringExtra("requester"));
+            }
+        }
+
+        final String requesterid = getIntent().getStringExtra("requester");
+        notificationRequest.setProvider(id);
+        notificationRequest.setRequester(requesterid);
+        //AlertDialog 알람 사용
+        AlertDialog.Builder logoutAlert = new AlertDialog.Builder(ProviderMainActivity.this);
+        logoutAlert.setTitle("도움요청 도착!");
+        logoutAlert.setMessage("도움수락하시겠습니까?");
+        logoutAlert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RetrofitService service = retrofit.create(RetrofitService.class);
+                service.atReadNotification(notificationRequest).enqueue(new Callback<ServerResponse>() {
+                    @Override
+                    public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                        if(response.isSuccessful()){
+                            ServerResponse body = response.body();
+                            Log.e("response",""+body.getResultCode()+","+body.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        final AlertDialog dialog = logoutAlert.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface args) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+
+        if(!ProviderMainActivity.this.isFinishing() && getIntent().getExtras() != null){
+            dialog.show();
+        }
 
         mActivity = this;
 
@@ -116,7 +195,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     protected void onStart() {
-        if(mGoogleApiClient != null && mGoogleApiClient.isConnected() == false){
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected() == false) {
 
             Log.d(TAG, "onStart: mGoogleApiClient connect");
             mGoogleApiClient.connect();
@@ -126,8 +205,8 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     }
 
     @OnClick(R.id.main_provider_setting_btn)
-    public void goSetting(){
-        Intent intent = new Intent(ProviderMainActivity.this, ProviderSettingActivity.class );
+    public void goSetting() {
+        Intent intent = new Intent(ProviderMainActivity.this, ProviderSettingActivity.class);
         startActivity(intent);
     }
 
@@ -145,7 +224,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-        if ( mRequestingLocationUpdates == false ) {
+        if (mRequestingLocationUpdates == false) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -166,7 +245,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                     mGoogleMap.setMyLocationEnabled(true);
                 }
 
-            }else{
+            } else {
 
                 Log.d(TAG, "onConnected : call startLocationUpdates");
                 startLocationUpdates();
@@ -190,13 +269,13 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG,"onConnectionFailed"+connectionResult.toString());
+        Log.d(TAG, "onConnectionFailed" + connectionResult.toString());
     }
 
     @Override
     public void onLocationChanged(Location location) {
         currentPosition
-                = new LatLng( location.getLatitude(), location.getLongitude());
+                = new LatLng(location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "onLocationChanged : ");
 
@@ -217,7 +296,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
             Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
             showDialogForLocationServiceSetting();
-        }else {
+        } else {
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -239,7 +318,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     private void stopLocationUpdates() {
 
-        Log.d(TAG,"stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates");
+        Log.d(TAG, "stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates");
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         mRequestingLocationUpdates = false;
     }
@@ -276,7 +355,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             Address address = addresses.get(0);
             return address.getAddressLine(0).toString();
         }
-
     }
 
 
@@ -307,10 +385,10 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         currentMarker = mGoogleMap.addMarker(markerOptions);
 
 
-        if ( mMoveMapByAPI ) {
+        if (mMoveMapByAPI) {
 
-            Log.d( TAG, "setCurrentLocation :  mGoogleMap moveCamera "
-                    + location.getLatitude() + " " + location.getLongitude() ) ;
+            Log.d(TAG, "setCurrentLocation :  mGoogleMap moveCamera "
+                    + location.getLatitude() + " " + location.getLongitude());
             // CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15);
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
             mGoogleMap.moveCamera(cameraUpdate);
@@ -364,7 +442,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
             Log.d(TAG, "checkPermissions : 퍼미션 가지고 있음");
 
-            if ( mGoogleApiClient.isConnected() == false) {
+            if (mGoogleApiClient.isConnected() == false) {
 
                 Log.d(TAG, "checkPermissions : 퍼미션 가지고 있음");
                 mGoogleApiClient.connect();
@@ -461,9 +539,9 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                         Log.d(TAG, "onActivityResult : 퍼미션 가지고 있음");
 
 
-                        if ( mGoogleApiClient.isConnected() == false ) {
+                        if (mGoogleApiClient.isConnected() == false) {
 
-                            Log.d( TAG, "onActivityResult : mGoogleApiClient connect ");
+                            Log.d(TAG, "onActivityResult : mGoogleApiClient connect ");
                             mGoogleApiClient.connect();
                         }
                         return;
@@ -475,12 +553,11 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     }
 
 
-
     //서비스시작
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e("service at ondestroy","ondestroy 서비스 시작");
+        Log.e("service at ondestroy", "ondestroy 서비스 시작");
         Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
         startService(intent);
     }
@@ -488,9 +565,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.e("service at ondestroy","onrestart 서비스 중지");
-        Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
-        stopService(intent);
+
     }
 
 
