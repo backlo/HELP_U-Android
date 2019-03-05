@@ -220,18 +220,15 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     protected void onResume() {
         super.onResume();
         if (mGoogleApiClient.isConnected()) {
-
             Log.d(TAG, "onResume : call startLocationUpdates");
             if (!mRequestingLocationUpdates) startLocationUpdates();
         }
-
 
         //앱 정보에서 퍼미션을 허가했는지를 다시 검사해봐야 한다.
         if (askPermissionOnceAgain) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 askPermissionOnceAgain = false;
-
                 checkPermissions();
             }
         }

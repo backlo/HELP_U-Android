@@ -144,7 +144,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();
