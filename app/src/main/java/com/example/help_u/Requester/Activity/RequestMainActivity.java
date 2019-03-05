@@ -1,14 +1,19 @@
 package com.example.help_u.Requester.Activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
@@ -21,16 +26,19 @@ import com.example.help_u.R;
 import com.example.help_u.Requester.Data.LocationRequest;
 import com.example.help_u.Requester.Service.MyServiceRequester;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RequestMainActivity extends AppCompatActivity {
+public class RequestMainActivity extends AppCompatActivity  {
 
     @BindView(R.id.help_btn)
     LinearLayout helpBtn;
@@ -185,6 +193,9 @@ public class RequestMainActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     ServerResponse body = response.body();
                     if(body != null){
+                        if(body.getResultCode() == 107){
+                            Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
+                        }
                         body.getMessage();
                         body.getParam();
                     }
@@ -197,5 +208,45 @@ public class RequestMainActivity extends AppCompatActivity {
             }
         });
     }
+/*
+    @TargetApi(Build.VERSION_CODES.M)
+    public void setPermissionCheck()P{
+        if(PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
+            // 최초 권한 요청인지, 혹은 사용자에 의한 재요청인지 확인
+            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                // 사용자가 임의로 권한을 취소한 경우
+                // 권한 재요청
+                Log.i("Permission >> ", "권한 재요청");
+                requestPermissions(permission, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+
+            }else {
+                // 최초로 권한을 요청하는 경우(첫실행)
+                Log.i("Permission >> ", "권한 최초요청");
+                requestPermissions(permission, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            }
+
+        } else { // 접근권한이 있을때
+            Log.i("Permission >> ", "접근 허용");
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+
+    }*/
 }
