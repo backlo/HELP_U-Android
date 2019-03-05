@@ -19,9 +19,10 @@ public class UserInfo {
         this.id = id;
     }
 
-    public UserInfo(String id, String password) {
+    public UserInfo(String id, String password, String token) {
         this.id = id;
         this.password = password;
+        this.token = token;
     }
 
     public UserInfo(String id, String password, String name, String phone, String personal_no, int gender, String user_type, String address, String token) {
