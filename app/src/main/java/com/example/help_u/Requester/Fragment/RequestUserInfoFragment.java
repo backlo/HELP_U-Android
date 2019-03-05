@@ -69,6 +69,11 @@ public class RequestUserInfoFragment extends Fragment {
         String address = addressEdit.getText().toString();
         String phone = phoneEdit.getText().toString();
 
+        //이름 저장
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("name", name);
+        editor.commit();
+
         Log.e("userinfo 수정 -> ", name + ", " + address + ", " + phone);
 
         final RetrofitService service = retrofit.create(RetrofitService.class);

@@ -113,7 +113,9 @@ public class MyServiceRequester extends Service {
         public void sendBatteryMessage(double lat, double lon) {
 
             String id = sp.getString("id", "");
-            String message = sp.getString("message", "");
+            String name = sp.getString("name","");
+            String message = name + "님의 배터리가 " + sp.getInt("batteryAmount",0) + "% 남았습니다.";
+
             int count = sp.getInt("helpcount", 0);
 
             if ("".equals(message)) {
