@@ -131,7 +131,7 @@ public class RequestEnrollFragment extends Fragment {
 
     @OnClick({R.id.enroll_commit, R.id.enroll_cancel})
     public void enrollCommit() {
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).addToBackStack(null).commit();
     }
 
     @Override
@@ -158,14 +158,15 @@ public class RequestEnrollFragment extends Fragment {
                     ServerResponse serverResponse = response.body();
                     Log.e("제공자 등록 response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode());
 
-                    if(serverResponse.getResultCode() != 110){
+                    if(serverResponse.getResultCode() == 110){
+                        Toast.makeText(getContext(),"등록된 번호입니다.",Toast.LENGTH_SHORT).show();
+                    } else if(serverResponse.getResultCode() == 104){
+                        Toast.makeText(getContext(),"가입되지 않는 휴대폰 사용자 입니다.",Toast.LENGTH_SHORT).show();
+                    } else{
                         items.add(number);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(getContext(),"등록 하였습니다.",Toast.LENGTH_SHORT).show();
-                    } else{
-                        Toast.makeText(getContext(),"등록된 번호입니다.",Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
 
