@@ -22,6 +22,7 @@ import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.ProviderMainActivity;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.Requester.Activity.RequestMainActivity;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private UserInfo userInfo;
-
+    String refreshedToken;
     SharedPreferences sp;
 
     private final int REQUEST_WIDTH = 512;
@@ -66,6 +67,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
+
+        refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
         modifyBitmap(R.drawable.main);
 
@@ -94,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             // 서버통신 테스트용 코드
             String id = login_id.getText().toString();
             String password = login_password.getText().toString();
-            final UserInfo userInfo = new UserInfo(id, password);
+            final UserInfo userInfo = new UserInfo(id, password,refreshedToken);
 
             RetrofitService service = retrofit.create(RetrofitService.class);
             service.login(userInfo).enqueue(new Callback<ServerResponse>() {
