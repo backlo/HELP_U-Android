@@ -44,7 +44,7 @@ public class BackgroundServiceThread extends Thread {
             Log.e("service handler run","backgroundservicethread");
             handler.sendEmptyMessage(0);
             try{
-                Thread.sleep(3000);
+                Thread.sleep(10000);
             }catch (Exception e){
 
             }

@@ -1,19 +1,14 @@
 package com.example.help_u.Requester.Activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
@@ -26,12 +21,9 @@ import com.example.help_u.R;
 import com.example.help_u.Requester.Data.LocationRequest;
 import com.example.help_u.Requester.Service.MyServiceRequester;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,8 +82,7 @@ public class RequestMainActivity extends AppCompatActivity  {
                 Toast.makeText(getApplicationContext(), "다시 보내주세요!", Toast.LENGTH_SHORT).show();
             } else {
                 sendHelpRequest();
-                Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
-                startActivity(i);
+
             }
         }
 
@@ -195,6 +186,9 @@ public class RequestMainActivity extends AppCompatActivity  {
                     if(body != null){
                         if(body.getResultCode() == 107){
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
+                            startActivity(i);
                         }
                         body.getMessage();
                         body.getParam();

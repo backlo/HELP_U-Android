@@ -31,7 +31,6 @@ public class MyService extends Service {
     double lat;
     LocationRequest_provider locationRequestProvider;
     Retrofit retrofit;
-    RetrofitService retrofitService;
     SharedPreferences sp;
     String id = "";
 
@@ -120,7 +119,7 @@ public class MyService extends Service {
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                     if(response.isSuccessful()){
                         ServerResponse body = response.body();
-                        Log.e("service","body"+body.getResultCode());
+                        Log.e("service send server","success!");
                     }
                 }
                 @Override

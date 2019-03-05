@@ -126,7 +126,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(10000);
                         Log.e("fore thread", "" + thread_lon + "," + thread_lat);
                         fore_locSend(thread_lat, thread_lon);
                     } catch (InterruptedException e) {
