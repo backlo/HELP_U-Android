@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
@@ -24,13 +25,14 @@ import com.example.help_u.Requester.Service.MyServiceRequester;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.AppSettingsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RequestMainActivity extends AppCompatActivity  {
+public class RequestMainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.help_btn)
     LinearLayout helpBtn;
@@ -47,6 +49,7 @@ public class RequestMainActivity extends AppCompatActivity  {
     Retrofit retrofit;
 
     SharedPreferences sp;
+    public static final int REQUEST_CODE = 123;
 
     @Override
     protected void onStart() {
@@ -61,6 +64,8 @@ public class RequestMainActivity extends AppCompatActivity  {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_request_main);
         ButterKnife.bind(this);
+
+        setPermissionLocation();
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
@@ -82,7 +87,6 @@ public class RequestMainActivity extends AppCompatActivity  {
                 Toast.makeText(getApplicationContext(), "다시 보내주세요!", Toast.LENGTH_SHORT).show();
             } else {
                 sendHelpRequest();
-
             }
         }
 
@@ -186,10 +190,11 @@ public class RequestMainActivity extends AppCompatActivity  {
                     if(body != null){
                         if(body.getResultCode() == 107){
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
-                        } else {
+                        } else{
                             Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
                             startActivity(i);
                         }
+
                         body.getMessage();
                         body.getParam();
                     }
@@ -202,45 +207,44 @@ public class RequestMainActivity extends AppCompatActivity  {
             }
         });
     }
-/*
-    @TargetApi(Build.VERSION_CODES.M)
-    public void setPermissionCheck()P{
-        if(PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-            // 최초 권한 요청인지, 혹은 사용자에 의한 재요청인지 확인
-            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+    private void setPermissionLocation(){
+        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_CONTACTS};
 
-                // 사용자가 임의로 권한을 취소한 경우
-                // 권한 재요청
-                Log.i("Permission >> ", "권한 재요청");
-                requestPermissions(permission, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
-
-            }else {
-                // 최초로 권한을 요청하는 경우(첫실행)
-                Log.i("Permission >> ", "권한 최초요청");
-                requestPermissions(permission, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            }
-
-        } else { // 접근권한이 있을때
-            Log.i("Permission >> ", "접근 허용");
+        if(EasyPermissions.hasPermissions(this, perms)){
+            Log.e("Permission >> " , "Location Checked");
+        } else{
+            EasyPermissions.requestPermissions(this,"권한 허용 부탁드립니다.", REQUEST_CODE, perms);
         }
-
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-
+        Log.e("Permission >> ", "why not call");
     }
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if(EasyPermissions.somePermissionDenied(this, String.valueOf(perms))){
+            new AppSettingsDialog.Builder(this).build().show();
+            Log.e("Permission >> ","onPermissionDenied!");
+        }
+    }
 
-    }*/
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("Permission >> ", "onActivityResult Method !!");
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE){
+            Log.e("Permission >> ", "onActivityResult!!");
+        }
+    }
 }
