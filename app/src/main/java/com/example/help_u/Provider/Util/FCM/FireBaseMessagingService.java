@@ -80,6 +80,8 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
         }
 
+
+
         String data_location = remoteMessage.getData().get("location");
 
         if(remoteMessage.getData() != null){
