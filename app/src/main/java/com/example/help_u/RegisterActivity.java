@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -58,6 +61,11 @@ public class RegisterActivity extends AppCompatActivity {
     @BindView(R.id.edit_address)
     EditText edit_address;
 
+    @BindView(R.id.regist_linear)
+    LinearLayout regist_linear;
+
+    InputMethodManager inputMethodManager;
+
 
 
     Retrofit retrofit;
@@ -76,6 +84,13 @@ public class RegisterActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        RegisterActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        inputMethodManager = (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+    }
+
+    @OnClick(R.id.regist_linear)
+    public void clickView(){
+        inputMethodManager.hideSoftInputFromWindow(edit_id.getWindowToken(), 0);
     }
 
     //아이디 중복체크 버튼
@@ -97,7 +112,6 @@ public class RegisterActivity extends AppCompatActivity {
                         }else{
                             overrlap_result_txt.setText("이미사용중인아이디입니다.");
                         }
-
                         Log.e("중복체크 response->",""+result.getResultCode()+","+result.getMessage());
                     }
                 }

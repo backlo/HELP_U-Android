@@ -9,9 +9,11 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.help_u.Provider.Data.Response.LoginResponse;
@@ -45,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.imageview)
     ImageView imageView;
 
+    @BindView(R.id.login_linear)
+    LinearLayout login_linear;
+
+    InputMethodManager inputMethodManager;
+
     private Retrofit retrofit;
     private UserInfo userInfo;
 
@@ -68,8 +75,16 @@ public class LoginActivity extends AppCompatActivity {
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        login_password.setFocusableInTouchMode(true);
+        LoginActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        inputMethodManager = (InputMethodManager)getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
     }
 
+    @OnClick(R.id.login_linear)
+    public void hideKeyboard(){
+        inputMethodManager.hideSoftInputFromWindow(login_password.getWindowToken(), 0);
+    }
 
     @OnClick(R.id.sign_login)
     public void login() {
