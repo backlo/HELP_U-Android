@@ -4,7 +4,10 @@ package com.example.help_u.Requester.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -15,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.help_u.Requester.Data.Response.ProviderPhonesResponse;
@@ -68,7 +73,7 @@ public class RequestEnrollFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         items = new ArrayList<String>() ;
-        adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_single_choice, items);
+        adapter = new ArrayAdapter(getActivity(), R.layout.my_single_choice, items);
 
         sp = getActivity().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
