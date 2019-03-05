@@ -1,7 +1,10 @@
 package com.example.help_u.Provider.Fragment;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,6 +42,8 @@ public class ProviderAlarmFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_provider_alarm, container, false);
         ButterKnife.bind(this,view);
         aManager = (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
+        NotificationManager notificationManager =
+                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
 
         if(aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE){
             sound_radio.setChecked(true);
@@ -47,6 +52,16 @@ public class ProviderAlarmFragment extends Fragment {
         }else{
             vibrate_radio.setChecked(false);
             vibrate_radio.setChecked(false);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+
+            startActivity(intent);
         }
 
         return view;

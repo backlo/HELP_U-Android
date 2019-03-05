@@ -26,6 +26,7 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.help_u.EventBus.Getnoti;
 import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.NotificationRequest;
 import com.example.help_u.Provider.Data.ServerResponse;
@@ -46,6 +47,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,6 +95,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     double thread_lat = 0;
     double thread_lon = 0;
     String id = "";
+    NotificationRequest notificationRequest;
 
     @BindView(R.id.main_provider_setting_btn)
     LinearLayout setting_btn;
@@ -110,7 +116,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
         stopService(intent);
 
-        final NotificationRequest notificationRequest = new NotificationRequest();
+        notificationRequest = new NotificationRequest();
         id = sp.getString("id", "");
 
 
@@ -173,15 +179,13 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(final_loc);
                 markerOptions.title("요청자위치");
-                markerOptions.snippet("요청자위치 snippet Test");
+                markerOptions.snippet("요청자위치");
                 markerOptions.draggable(true);
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 mGoogleMap.addMarker(markerOptions);
 
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(final_loc, 15);
                 mGoogleMap.moveCamera(cameraUpdate);
-
-
 
             }
         }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
@@ -234,12 +238,82 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEvent(Getnoti event){
+        Log.e("event bus",""+event.location+"주소->"+event.address);
+
+
+        String intent_Loc = event.location;
+        String requester_Loc[] = intent_Loc.split(",");
+        LatLng final_loc = new LatLng(Double.parseDouble(requester_Loc[0]), Double.parseDouble(requester_Loc[1]));
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(final_loc);
+        markerOptions.title("요청자위치");
+        markerOptions.snippet(event.address);
+        markerOptions.draggable(true);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        mGoogleMap.addMarker(markerOptions);
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(final_loc, 15);
+        mGoogleMap.moveCamera(cameraUpdate);
+
+
+        final String requesterid = event.id;
+        notificationRequest.setProvider(id);
+        notificationRequest.setRequester(requesterid);
+        //AlertDialog 알람 사용
+        AlertDialog.Builder logoutAlert = new AlertDialog.Builder(ProviderMainActivity.this);
+        logoutAlert.setTitle("도움요청 도착!");
+        logoutAlert.setMessage("도움수락하시겠습니까?");
+        logoutAlert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                RetrofitService service = retrofit.create(RetrofitService.class);
+                service.atReadNotification(notificationRequest).enqueue(new Callback<ServerResponse>() {
+                    @Override
+                    public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                        if (response.isSuccessful()) {
+                            ServerResponse body = response.body();
+                            Log.e("response", "" + body.getResultCode() + "," + body.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ServerResponse> call, Throwable t) {
+
+                    }
+                });
+            }
+        }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        final AlertDialog dialog = logoutAlert.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface args) {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.RED);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+
+        if (!ProviderMainActivity.this.isFinishing()) {
+            dialog.show();
+        }
+
+    }
+
     @Override
     protected void onStart() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected() == false) {
             Log.d(TAG, "onStart: mGoogleApiClient connect");
             mGoogleApiClient.connect();
         }
+        EventBus.getDefault().register(this);
 
         super.onStart();
     }
@@ -637,5 +711,11 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
         startService(intent);
         super.onUserLeaveHint();
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 }

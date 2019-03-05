@@ -18,6 +18,7 @@ import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
+import com.example.help_u.Requester.Fragment.RequestUserInfoFragment;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -111,10 +112,21 @@ public class ProviderInfoFragment extends Fragment {
         return view;
     }
 
+    @OnClick(R.id.info_modify_btn)
+    public void modify_btn(){
+        if (getFragmentManager() != null) {
+            RequestUserInfoFragment.checktype = false;
+            getFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
+
+        }
+    }
+
     @OnClick(R.id.info_ok_btn)
     public void onclick_info(){
+
         if (getFragmentManager() != null) {
-            getFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new ProviderSettingFragment()).commit();
+            getFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new ProviderSettingFragment()).addToBackStack(null).commit();
+
         }
     }
 }

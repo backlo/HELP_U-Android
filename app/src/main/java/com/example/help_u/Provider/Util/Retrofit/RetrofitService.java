@@ -18,7 +18,7 @@ import retrofit2.http.POST;
 
 public interface RetrofitService  {
 
-    String URL = "http://223.194.134.194:8080";
+    String URL = "http://ec2-18-224-153-16.us-east-2.compute.amazonaws.com:8080/";
 
     @POST("/helpu/user/registration")
     Call<ServerResponse> sendUserInfo(@Body UserInfo userInfo);

@@ -12,13 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.help_u.Provider.Data.UserInfo;
-import com.example.help_u.Requester.Data.Modify_User;
-import com.example.help_u.Requester.Data.Response.ProviderPhonesResponse;
 import com.example.help_u.Provider.Data.ServerResponse;
+import com.example.help_u.Provider.Fragment.ProviderSettingFragment;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
 import com.example.help_u.Requester.Data.GetUserInfo;
+import com.example.help_u.Requester.Data.Modify_User;
 import com.example.help_u.Requester.Data.Response.RequesterInfo;
 import com.google.gson.Gson;
 
@@ -43,6 +42,8 @@ public class RequestUserInfoFragment extends Fragment {
 
     Retrofit retrofit;
     private SharedPreferences sp;
+
+    public static boolean checktype = true;
 
     public RequestUserInfoFragment() {   }
 
@@ -99,8 +100,15 @@ public class RequestUserInfoFragment extends Fragment {
 
     @OnClick(R.id.userinfo_cancel)
     public void userinfoiCancel(){
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
+        if(checktype){
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
+        }else{
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new ProviderSettingFragment()).commit();
+
+        }
     }
+
+
 
 
 

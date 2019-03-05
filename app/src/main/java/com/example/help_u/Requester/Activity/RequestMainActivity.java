@@ -18,11 +18,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.help_u.EventBus.Getnoti;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
 import com.example.help_u.Requester.Data.LocationRequest;
 import com.example.help_u.Requester.Service.MyServiceRequester;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -55,13 +59,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
     SharedPreferences sp;
     public static final int REQUEST_CODE = 123;
 
-    @Override
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.e("Main onRestart","start");
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //FullScreen
@@ -82,6 +79,12 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         startService(intent);
 
         locationService();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getEvent(Getnoti event){
+        Log.e("event bus",""+event.location);
     }
 
     //도움 요청 버튼
@@ -193,6 +196,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if(response.isSuccessful()){
+                    Log.e("도움요청 to server","success!!!!!");
                     ServerResponse body = response.body();
                     if(body != null){
                         if(body.getResultCode() == 107){
@@ -254,4 +258,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
             Log.e("Permission >> ", "onActivityResult!!");
         }
     }
+
+
 }

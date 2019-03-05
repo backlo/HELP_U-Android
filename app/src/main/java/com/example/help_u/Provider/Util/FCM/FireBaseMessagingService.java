@@ -3,9 +3,7 @@ package com.example.help_u.Provider.Util.FCM;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,10 +13,12 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.help_u.Provider.ProviderMainActivity;
+import com.example.help_u.EventBus.Getnoti;
 import com.example.help_u.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -41,10 +41,10 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
 
 
     private void sendNotification(String messageBody, String title) {
-        Intent intent = new Intent(this, ProviderMainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+//        Intent intent = new Intent(this, ProviderMainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+//                PendingIntent.FLAG_ONE_SHOT);
 
         //foreground notification
         String channelId = getString(R.string.default_notification_channel_id);
@@ -56,8 +56,8 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
                     .setContentTitle(URLDecoder.decode(title, "UTF-8"))
                     .setContentText(URLDecoder.decode(messageBody, "UTF-8"))
                     .setAutoCancel(true)
-                    .setSound(defaultSoundUri)
-                    .setContentIntent(pendingIntent);
+                    .setSound(defaultSoundUri);
+                    //.setContentIntent(pendingIntent);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -87,12 +87,11 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
         }
 
-
-
         String data_location = remoteMessage.getData().get("location");
 
         if(remoteMessage.getData() != null){
-            getCurrentAddress(data_location);
+            //getCurrentAddress(data_location);
+            EventBus.getDefault().post(new Getnoti(data_location,getCurrentAddress(data_location), remoteMessage.getData().get("requester")));
         }
 
         super.onMessageReceived(remoteMessage);
