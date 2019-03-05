@@ -131,7 +131,7 @@ public class RequestEnrollFragment extends Fragment {
 
     @OnClick({R.id.enroll_commit, R.id.enroll_cancel})
     public void enrollCommit() {
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).addToBackStack(null).commit();
     }
 
     @Override

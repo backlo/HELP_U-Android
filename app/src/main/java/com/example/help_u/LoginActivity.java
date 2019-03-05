@@ -1,5 +1,6 @@
 package com.example.help_u;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private final int REQUEST_WIDTH = 512;
     private final int REQUEST_HEIGHT = 512;
+    String gettoken = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
+
         modifyBitmap(R.drawable.main);
 
         userInfo = new UserInfo();
@@ -78,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
 
         login_password.setFocusableInTouchMode(true);
         LoginActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -91,13 +95,16 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.sign_login)
     public void login() {
+        sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+        gettoken = sp.getString("token", "");
+        Log.e("loginactivity",""+gettoken);
 
-        if (preventionClick() == true) {
+        if (preventionClick() == true && gettoken != null) {
 
             // 서버통신 테스트용 코드
             String id = login_id.getText().toString();
             String password = login_password.getText().toString();
-            final UserInfo userInfo = new UserInfo(id, password,refreshedToken);
+            final UserInfo userInfo = new UserInfo(id, password,gettoken);
 
             RetrofitService service = retrofit.create(RetrofitService.class);
             service.login(userInfo).enqueue(new Callback<ServerResponse>() {

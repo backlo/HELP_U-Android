@@ -50,7 +50,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
 
     static double lat = 0;
     static double lon = 0;
-    LocationManager lm;
     Retrofit retrofit;
 
     SharedPreferences sp;
@@ -59,7 +58,13 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
     @Override
     protected void onStart() {
         super.onStart();
-        locationService();
+        Log.e("Main onStart","start");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.e("Main onRestart","start");
     }
 
     @Override
@@ -71,6 +76,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         ButterKnife.bind(this);
 
         setPermissionLocation();
+        locationService();
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
         retrofit = new Retrofit.Builder()
@@ -138,10 +144,10 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
 
         Log.e("MainActiviy >> " ,"locationService시작");
 
-        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();
