@@ -114,10 +114,11 @@ public class RequestSettingFragment extends Fragment {
                     editor.clear();
                     editor.commit();
 
-                    getActivity().finish();
-
                     Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
+
+                    getActivity().finish();
 
 
                 }
