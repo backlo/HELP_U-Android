@@ -19,6 +19,7 @@ import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
 import com.example.help_u.Requester.Data.LocationRequest;
+import com.example.help_u.Requester.Service.MyServiceRequester;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +67,9 @@ public class RequestMainActivity extends AppCompatActivity {
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        Log.e("MyServiceRequester >> ", "service 시작");
+        Intent intent = new Intent(getApplicationContext(), MyServiceRequester.class);
+        startService(intent);
     }
 
     //도움 요청 버튼
@@ -105,6 +109,13 @@ public class RequestMainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent serviceIntent = new Intent(getApplicationContext(), MyServiceRequester.class);
+        stopService(serviceIntent);
+    }
+
     //더블클릭 방지 함수
     private boolean preventionClick() {
         if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
@@ -122,7 +133,7 @@ public class RequestMainActivity extends AppCompatActivity {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();

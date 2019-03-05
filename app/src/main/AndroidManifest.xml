@@ -75,7 +75,7 @@
             </intent-filter>
         </service>
 
-        <service android:name=".Requester.Util.Service.MyService"></service>
+        <service android:name=".Requester.Service.MyServiceRequester"></service>
     </application>
 
 </manifest>

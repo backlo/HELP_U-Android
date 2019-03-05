@@ -1,7 +1,10 @@
 package com.example.help_u.Requester.Fragment;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +18,7 @@ import android.widget.RadioGroup;
 
 import com.example.help_u.R;
 import com.example.help_u.Requester.Activity.RequestSettingActivity;
+import com.example.help_u.Requester.Service.MyServiceRequester;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +35,10 @@ public class RequestBatteryFragment extends Fragment {
     @BindView(R.id.battery_cancel)
     Button batteryCancel;
 
+    SharedPreferences sp;
+
+    RadioButton rb;
+
     public RequestBatteryFragment() {
     }
 
@@ -41,15 +49,40 @@ public class RequestBatteryFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_request_battery, container, false);
         ButterKnife.bind(this, v);
 
+        sp = getActivity().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+
+        batteryGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putInt("batteryid",checkedId);
+                editor.commit();
+            }
+        });
+
+
+        if(sp.getInt("batteryid",0) != 0)
+            batteryGroup.check(sp.getInt("batteryid",0));
+
+
         return v;
     }
 
     @OnClick(R.id.battery_commit)
     public void batteryCommit() {
         int id = batteryGroup.getCheckedRadioButtonId();
-        RadioButton rb = (RadioButton) getActivity().findViewById(id);
-        if(!rb.getText().equals(""))
-            Log.e("battery data >> ", rb.getText() + "");
+        rb = (RadioButton) getActivity().findViewById(id);
+        String rbData = rb.getText().toString().replace("%","");
+
+        SharedPreferences.Editor editor = sp.edit();
+        int batteryAmount = Integer.valueOf(rbData);
+        editor.putInt("batteryAmount",batteryAmount);
+
+        editor.commit();
+
+        Intent intent = new Intent(getActivity().getApplicationContext(), MyServiceRequester.class);
+        getActivity().stopService(intent);
+        getActivity().startService(intent);
 
     }
 
@@ -58,19 +91,4 @@ public class RequestBatteryFragment extends Fragment {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
     }
 
-
-//    @Override
-//    public void onBack() {
-//        Log.e("!!!","onBack()");
-//        RequestSettingActivity requestSettingActivity = (RequestSettingActivity)getActivity();
-//        requestSettingActivity.setOnBackPressedListener(null);
-//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        Log.e("!!!", "onAttach()");
-//        ((RequestSettingActivity)context).setOnBackPressedListener(this);
-//    }
 }

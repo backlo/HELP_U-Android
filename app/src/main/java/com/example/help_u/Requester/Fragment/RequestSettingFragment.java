@@ -1,6 +1,5 @@
 package com.example.help_u.Requester.Fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import com.example.help_u.LoginActivity;
 import com.example.help_u.R;
-import com.example.help_u.Requester.Activity.RequestSettingActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,6 +114,8 @@ public class RequestSettingFragment extends Fragment {
                     editor.putString("usertype","");
                     editor.clear();
                     editor.commit();
+
+
 
                     Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
                     startActivity(i);

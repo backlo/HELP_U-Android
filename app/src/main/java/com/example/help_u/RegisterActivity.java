@@ -1,6 +1,8 @@
 package com.example.help_u;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -164,6 +166,13 @@ public class RegisterActivity extends AppCompatActivity {
         userInfo.setUser_type(user_type);
         userInfo.setAddress(address);
         userInfo.setToken(token);
+
+        //Requester 이름저장
+        SharedPreferences sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putString("name",id);
+        editor.commit();
 
         RetrofitService service = retrofit.create(RetrofitService.class);
         service.sendUserInfo(userInfo).enqueue(new Callback<ServerResponse>() {

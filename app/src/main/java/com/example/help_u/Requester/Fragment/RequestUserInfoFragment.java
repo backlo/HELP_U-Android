@@ -69,6 +69,11 @@ public class RequestUserInfoFragment extends Fragment {
         String address = addressEdit.getText().toString();
         String phone = phoneEdit.getText().toString();
 
+        //이름 저장
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("name", name);
+        editor.commit();
+
         Log.e("userinfo 수정 -> ", name + ", " + address + ", " + phone);
 
         final RetrofitService service = retrofit.create(RetrofitService.class);
@@ -130,7 +135,13 @@ public class RequestUserInfoFragment extends Fragment {
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
                 Log.e("UserInfo값 error->", "" + t.toString());
-                Toast.makeText(getContext(), "서버에 연결할수 없습니다.", Toast.LENGTH_SHORT).show();
+                try{
+                    Toast.makeText(getContext(), "서버에 연결할수 없습니다.", Toast.LENGTH_SHORT).show();
+                } catch (NullPointerException e){
+                    Log.e("UserInfo error->", "NullPointException 발생");
+                    Toast.makeText(getContext(), "서버에 연결할수 없습니다..", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
