@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-
 //setting초기 부분
 public class RequestSettingFragment extends Fragment {
 
@@ -52,7 +51,7 @@ public class RequestSettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_request_setting, container, false);
         ButterKnife.bind(this, v);
-        sp  = getActivity().getSharedPreferences("Requester", Context.MODE_PRIVATE);
+        sp = getActivity().getSharedPreferences("Requester", Context.MODE_PRIVATE);
         return v;
     }
 
@@ -111,15 +110,16 @@ public class RequestSettingFragment extends Fragment {
                     //로그아웃 보내기
                     Toast.makeText(getContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("usertype","");
+                    editor.putString("usertype", "");
                     editor.clear();
                     editor.commit();
 
-
-
                     Intent i = new Intent(getActivity().getApplicationContext(), LoginActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
+
                     getActivity().finish();
+
 
                 }
             }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
@@ -142,10 +142,10 @@ public class RequestSettingFragment extends Fragment {
     }
 
     //더블클릭 방지 함수
-    private boolean preventionClick(){
-        if(SystemClock.elapsedRealtime() - lastClickTime < 1000){
+    private boolean preventionClick() {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000) {
             return false;
-        }else{
+        } else {
             lastClickTime = SystemClock.elapsedRealtime();
             return true;
         }

@@ -56,18 +56,12 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
     public static final int REQUEST_CODE = 123;
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e("Main onStart","start");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
         Log.e("Main onRestart","start");
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //FullScreen
@@ -86,6 +80,8 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         Log.e("MyServiceRequester >> ", "service 시작");
         Intent intent = new Intent(getApplicationContext(), MyServiceRequester.class);
         startService(intent);
+
+        locationService();
     }
 
     //도움 요청 버튼
