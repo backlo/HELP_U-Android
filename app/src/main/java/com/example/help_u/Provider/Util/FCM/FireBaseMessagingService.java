@@ -1,10 +1,12 @@
 package com.example.help_u.Provider.Util.FCM;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.RingtoneManager;
@@ -28,7 +30,12 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String token) {
-        Log.e("fcm 토큰", "Refreshed token: " + token);
+        SharedPreferences sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putString("token",token);
+        editor.commit();
+        Log.e("fcm 토큰", "Refreshed token: " + sp.getString("token",""));
         super.onNewToken(token);
     }
 
