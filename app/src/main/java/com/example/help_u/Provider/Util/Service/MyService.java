@@ -1,8 +1,10 @@
 package com.example.help_u.Provider.Util.Service;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -30,6 +32,8 @@ public class MyService extends Service {
     LocationRequest_provider locationRequestProvider;
     Retrofit retrofit;
     RetrofitService retrofitService;
+    SharedPreferences sp;
+    String id = "";
 
 
     @Override
@@ -41,11 +45,13 @@ public class MyService extends Service {
     @Override
     public void onCreate() {
         LocationManager lm;
+        sp = getApplicationContext().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+        id = sp.getString("id", "");
 
         super.onCreate();
     }
@@ -53,11 +59,8 @@ public class MyService extends Service {
     //백그라운드에서 실행되는 동작 구현(네트워크)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("service!@!@!@", "background ok");
         locationServiceHandler handler = new locationServiceHandler();
-
         thread = new BackgroundServiceThread(handler, getApplicationContext());
-
         thread.start();
         return START_STICKY;
     }
@@ -112,7 +115,7 @@ public class MyService extends Service {
         public void sendLocinfo(double lat, double lon){
             RetrofitService retrofitService = retrofit.create(RetrofitService.class);
 
-            locationRequestProvider = new LocationRequest_provider("test6", String.valueOf(lat)+","+String.valueOf(lon));
+            locationRequestProvider = new LocationRequest_provider(id, String.valueOf(lat)+","+String.valueOf(lon));
             retrofitService.sendLocation_Provider(locationRequestProvider).enqueue(new retrofit2.Callback<ServerResponse>() {
                 @Override
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {

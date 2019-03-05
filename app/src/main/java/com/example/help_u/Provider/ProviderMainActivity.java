@@ -89,6 +89,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     double thread_lat = 0;
     double thread_lon = 0;
+    String id = "";
 
     @BindView(R.id.main_provider_setting_btn)
     LinearLayout setting_btn;
@@ -110,7 +111,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         stopService(intent);
 
         final NotificationRequest notificationRequest = new NotificationRequest();
-        final String id = sp.getString("id", "");
+        id = sp.getString("id", "");
 
 
         if (getIntent().getExtras() != null) {
@@ -120,17 +121,14 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             }
         }
 
-        if(thread_lon != 0 && thread_lat != 0){
-        }
-
         loc_thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true){
+                while (true) {
                     try {
                         Thread.sleep(5000);
-                        Log.e("fore thread",""+thread_lon+","+thread_lat);
-                        fore_locSend(thread_lat,thread_lon);
+                        Log.e("fore thread", "" + thread_lon + "," + thread_lat);
+                        fore_locSend(thread_lat, thread_lon);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -154,9 +152,9 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                 service.atReadNotification(notificationRequest).enqueue(new Callback<ServerResponse>() {
                     @Override
                     public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             ServerResponse body = response.body();
-                            Log.e("response",""+body.getResultCode()+","+body.getMessage());
+                            Log.e("response", "" + body.getResultCode() + "," + body.getMessage());
                         }
                     }
 
@@ -165,6 +163,25 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
                     }
                 });
+
+                //요청자 위치 googlemap maker
+                String intent_Loc = getIntent().getStringExtra("location");
+                String requester_Loc[] = intent_Loc.split(",");
+                LatLng final_loc = new LatLng(Double.parseDouble(requester_Loc[0]), Double.parseDouble(requester_Loc[1]));
+                //if (currentMarker != null) currentMarker.remove();
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(final_loc);
+                markerOptions.title("요청자위치");
+                markerOptions.snippet("요청자위치 snippet Test");
+                markerOptions.draggable(true);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                mGoogleMap.addMarker(markerOptions);
+
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(final_loc, 15);
+                mGoogleMap.moveCamera(cameraUpdate);
+
+
 
             }
         }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
@@ -183,23 +200,8 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
-        if(!ProviderMainActivity.this.isFinishing() && getIntent().getStringExtra("location") != null){
+        if (!ProviderMainActivity.this.isFinishing() && getIntent().getStringExtra("location") != null) {
             dialog.show();
-            String intent_Loc = getIntent().getStringExtra("location");
-            String requester_Loc[] = intent_Loc.split(",");
-            LatLng final_loc = new LatLng(Double.parseDouble(requester_Loc[0]),Double.parseDouble(requester_Loc[1]));
-            //if (currentMarker != null) currentMarker.remove();
-
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(final_loc);
-            markerOptions.title("요청자위치");
-            markerOptions.snippet("요청자위치 snippet Test");
-            markerOptions.draggable(true);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-            //mGoogleMap.addMarker(markerOptions);
-
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(final_loc, 15);
-            //mGoogleMap.moveCamera(cameraUpdate);
         }
 
         mActivity = this;
@@ -333,21 +335,22 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         thread_lon = location.getLongitude();
     }
 
-    private void fore_locSend(double lat, double lon){
+    private void fore_locSend(double lat, double lon) {
 
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
-        locationRequestProvider = new LocationRequest_provider("test6", String.valueOf(lat)+","+String.valueOf(lon));
+        locationRequestProvider = new LocationRequest_provider(id, String.valueOf(lat) + "," + String.valueOf(lon));
         retrofitService.sendLocation_Provider(locationRequestProvider).enqueue(new retrofit2.Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     ServerResponse body = response.body();
-                    Log.e("foreground location","success");
+                    Log.e("foreground location", "success");
                 }
             }
+
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-                Log.e("service","send loc error->"+t.toString());
+                Log.e("service", "send loc error->" + t.toString());
             }
         });
 
@@ -600,8 +603,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                     if (checkLocationServicesStatus()) {
 
                         Log.d(TAG, "onActivityResult : 퍼미션 가지고 있음");
-
-
                         if (mGoogleApiClient.isConnected() == false) {
 
                             Log.d(TAG, "onActivityResult : mGoogleApiClient connect ");
@@ -627,6 +628,17 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     protected void onRestart() {
+        Log.e("service at onRestart", "ondestroy 서비스 정지");
+        Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
+        stopService(intent);
         super.onRestart();
+    }
+
+    @Override
+    protected void onUserLeaveHint() {
+        Log.e("service at homePressed", "ondestroy 서비스 정지");
+        Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
+        startService(intent);
+        super.onUserLeaveHint();
     }
 }
