@@ -122,7 +122,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
-                Object value = getIntent().getExtras().get(key);
                 Log.e("noti intent", "" + getIntent().getStringExtra("location") + "" + getIntent().getStringExtra("requester"));
             }
         }
@@ -174,12 +173,11 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                 String intent_Loc = getIntent().getStringExtra("location");
                 String requester_Loc[] = intent_Loc.split(",");
                 LatLng final_loc = new LatLng(Double.parseDouble(requester_Loc[0]), Double.parseDouble(requester_Loc[1]));
-                //if (currentMarker != null) currentMarker.remove();
 
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(final_loc);
                 markerOptions.title("요청자위치");
-                markerOptions.snippet("요청자위치");
+                markerOptions.snippet(intent_Loc);
                 markerOptions.draggable(true);
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 mGoogleMap.addMarker(markerOptions);
@@ -414,7 +412,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if (response.isSuccessful()) {
-                    ServerResponse body = response.body();
                     Log.e("foreground location", "success");
                 }
             }
@@ -538,7 +535,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         mMoveMapByUser = false;
 
         //디폴트 위치, Seoul
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
+        LatLng DEFAULT_LOCATION = new LatLng(37, 126);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
@@ -575,7 +572,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             showDialogForPermissionSetting("퍼미션 거부 + Don't ask again(다시 묻지 않음) " +
                     "체크 박스를 설정한 경우로 설정에서 퍼미션 허가해야합니다.");
         } else if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED) {
-
 
             Log.d(TAG, "checkPermissions : 퍼미션 가지고 있음");
 
@@ -707,7 +703,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     protected void onUserLeaveHint() {
-        Log.e("service at homePressed", "ondestroy 서비스 정지");
+        Log.e("service at homePressed", "onUserLeaveHint 서비스 시작");
         Intent intent = new Intent(ProviderMainActivity.this, MyService.class);
         startService(intent);
         super.onUserLeaveHint();

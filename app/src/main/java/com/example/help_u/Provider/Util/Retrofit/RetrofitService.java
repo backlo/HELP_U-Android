@@ -3,6 +3,7 @@ package com.example.help_u.Provider.Util.Retrofit;
 
 import com.example.help_u.Provider.Data.LocationRequest_provider;
 import com.example.help_u.Provider.Data.NotificationRequest;
+import com.example.help_u.Provider.Data.SendAlarmSet;
 import com.example.help_u.Requester.Data.AddNumber;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
@@ -28,6 +29,9 @@ public interface RetrofitService  {
 
     @POST("/helpu/user/info")
     Call<ServerResponse> getInfo(@Body UserInfo userInfo);
+
+    @POST("/helpu/user/alarm")
+    Call<ServerResponse> setAlarm(@Body SendAlarmSet sendAlarmSet);
 
     @POST("/helpu/user/login")
     Call<ServerResponse> login(@Body UserInfo userInfo);

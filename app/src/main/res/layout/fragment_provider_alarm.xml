@@ -29,6 +29,7 @@
             android:scaleY="2"
             android:switchPadding="15dp"
             android:theme="@style/CustomSwitch"
+            android:checked="true"
             android:text="알람" />
     </LinearLayout>
 
@@ -49,15 +50,15 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:layout_marginRight="30dp"
-                android:buttonTint="@color/colorMainTheme"
+                android:buttonTint="@color/colorButtonTint"
                 android:text="진동" />
 
             <RadioButton
+                android:buttonTint="@color/colorButtonTint"
                 android:id="@+id/vibrate_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
-                android:buttonTint="@color/colorMainTheme"
                 android:text="소리" />
 
 

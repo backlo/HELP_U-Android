@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,9 +71,6 @@ public class ProviderInfoFragment extends Fragment {
                 .build();
 
         String id = sp.getString("id", "");
-        Log.e("userinfo",""+id);
-
-
         userInfo_id.setId(id);
 
         RetrofitService service = retrofit.create(RetrofitService.class);
@@ -113,7 +109,7 @@ public class ProviderInfoFragment extends Fragment {
     }
 
     @OnClick(R.id.info_modify_btn)
-    public void modify_btn(){
+    public void modify_btn() {
         if (getFragmentManager() != null) {
             RequestUserInfoFragment.checktype = false;
             getFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new RequestUserInfoFragment()).addToBackStack(null).commit();
@@ -122,7 +118,7 @@ public class ProviderInfoFragment extends Fragment {
     }
 
     @OnClick(R.id.info_ok_btn)
-    public void onclick_info(){
+    public void onclick_info() {
 
         if (getFragmentManager() != null) {
             getFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new ProviderSettingFragment()).addToBackStack(null).commit();
