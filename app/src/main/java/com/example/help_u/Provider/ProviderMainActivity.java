@@ -120,12 +120,15 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         id = sp.getString("id", "");
 
 
+        //백그라운드 노티 데이터
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Log.e("noti intent", "" + getIntent().getStringExtra("location") + "" + getIntent().getStringExtra("requester"));
             }
         }
 
+
+        //포그라운드에서 스레드실행(서버에 위치전송)
         loc_thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -177,7 +180,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(final_loc);
                 markerOptions.title("요청자위치");
-                markerOptions.snippet(intent_Loc);
+                markerOptions.snippet(getCurrentAddress(final_loc));
                 markerOptions.draggable(true);
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 mGoogleMap.addMarker(markerOptions);
@@ -226,7 +229,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
             if (!mRequestingLocationUpdates) startLocationUpdates();
         }
 
-        //앱 정보에서 퍼미션을 허가했는지를 다시 검사해봐야 한다.
+        //앱 정보에서 퍼미션을 허가했는지를 다시 검사
         if (askPermissionOnceAgain) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -238,8 +241,8 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void getEvent(Getnoti event){
+        //포그라운드 노티 받았을때 이벤트
         Log.e("event bus",""+event.location+"주소->"+event.address);
-
 
         String intent_Loc = event.location;
         String requester_Loc[] = intent_Loc.split(",");
@@ -305,6 +308,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    //생명주기에 이벤트 등록 및 googleapi 연결 체크
     @Override
     protected void onStart() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected() == false) {
@@ -316,12 +320,14 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         super.onStart();
     }
 
+    //설정클릭
     @OnClick(R.id.main_provider_setting_btn)
     public void goSetting() {
         Intent intent = new Intent(ProviderMainActivity.this, ProviderSettingActivity.class);
         startActivity(intent);
     }
 
+    //구글맵 로드
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
@@ -332,7 +338,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     }
 
-
+    //권한 체크
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -367,6 +373,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    //네트워크 연결체크
     @Override
     public void onConnectionSuspended(int i) {
         Log.d(TAG, "onConnectionSuspended");
@@ -376,7 +383,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         else if (i == CAUSE_SERVICE_DISCONNECTED)
             Log.e(TAG, "onConnectionSuspended():  Google Play services " +
                     "connection lost.  Cause: service disconnected");
-
     }
 
     @Override
@@ -384,6 +390,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         Log.d(TAG, "onConnectionFailed" + connectionResult.toString());
     }
 
+    //위치변경시 위도경도 체크
     @Override
     public void onLocationChanged(final Location location) {
         currentPosition
@@ -404,6 +411,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         thread_lon = location.getLongitude();
     }
 
+    //포그라운드에서 서버에 위도경도 전송
     private void fore_locSend(double lat, double lon) {
 
         RetrofitService retrofitService = retrofit.create(RetrofitService.class);
@@ -427,7 +435,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     private void startLocationUpdates() {
 
         if (!checkLocationServicesStatus()) {
-
             Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
             showDialogForLocationServiceSetting();
         } else {
@@ -438,20 +445,15 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
                 Log.d(TAG, "startLocationUpdates : 퍼미션 안가지고 있음");
                 return;
             }
-
-
             Log.d(TAG, "startLocationUpdates : call FusedLocationApi.requestLocationUpdates");
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, this);
             mRequestingLocationUpdates = true;
-
             mGoogleMap.setMyLocationEnabled(true);
-
         }
 
     }
 
     private void stopLocationUpdates() {
-
         Log.d(TAG, "stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates");
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         mRequestingLocationUpdates = false;
@@ -459,7 +461,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
     public String getCurrentAddress(LatLng latlng) {
 
-        //지오코더... GPS를 주소로 변환
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
         List<Address> addresses;
@@ -529,7 +530,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
-
+    //위치 못잡을때 디폴트위치 설정
     public void setDefaultLocation() {
 
         mMoveMapByUser = false;
@@ -552,9 +553,9 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
         mGoogleMap.moveCamera(cameraUpdate);
-
     }
 
+    //마시멜로 버전 권한체크
     @TargetApi(Build.VERSION_CODES.M)
     private void checkPermissions() {
         boolean fineLocationRationale = ActivityCompat
@@ -606,6 +607,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         builder.create().show();
     }
 
+    //권한없을때 다이얼로그 띄우기
     private void showDialogForPermissionSetting(String msg) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
@@ -632,6 +634,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         builder.create().show();
     }
 
+    //권한없을때 다이얼로그 띄우기
     private void showDialogForLocationServiceSetting() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProviderMainActivity.this);
@@ -664,7 +667,6 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         switch (requestCode) {
 
             case GPS_ENABLE_REQUEST_CODE:
-
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
@@ -683,7 +685,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
-    //서비스시작
+    //생명주기 서비스시작
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -693,6 +695,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         thread_run = false;
     }
 
+    //생명주기 서비스 정지
     @Override
     protected void onRestart() {
         Log.e("service at onRestart", "ondestroy 서비스 정지");
@@ -701,6 +704,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         super.onRestart();
     }
 
+    //홈버튼 서비스 시작
     @Override
     protected void onUserLeaveHint() {
         Log.e("service at homePressed", "onUserLeaveHint 서비스 시작");
@@ -709,6 +713,7 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
         super.onUserLeaveHint();
     }
 
+    //이벤트 연결해제
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);

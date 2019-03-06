@@ -73,8 +73,9 @@ public class ProviderInfoFragment extends Fragment {
         String id = sp.getString("id", "");
         userInfo_id.setId(id);
 
-        RetrofitService service = retrofit.create(RetrofitService.class);
 
+        //서버에서 사용자 정보 받아오기
+        RetrofitService service = retrofit.create(RetrofitService.class);
         service.getInfo(userInfo_id).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
