@@ -24,6 +24,7 @@
         android:layout_margin="50dp">
 
         <RadioButton
+            android:checked="true"
             android:id="@+id/radio_help1"
             android:buttonTint="@color/colorButtonTint"
             android:layout_margin="5dp"
