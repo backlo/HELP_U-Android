@@ -1,7 +1,6 @@
 package com.example.help_u.Requester.Data.Response;
 
-import java.util.List;
-
+//요청자 정보 부를때 서버 응답 부분
 public class RequesterInfo {
 
     private String name;

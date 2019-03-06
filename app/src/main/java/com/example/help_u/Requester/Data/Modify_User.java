@@ -1,5 +1,6 @@
 package com.example.help_u.Requester.Data;
 
+//수정하고 서버러 보내는 서버 모델 부분
 public class Modify_User {
 
     private String id;

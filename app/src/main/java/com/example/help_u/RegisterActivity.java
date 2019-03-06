@@ -66,11 +66,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     InputMethodManager inputMethodManager;
 
-
-
     Retrofit retrofit;
     UserInfo userInfo;
     String token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
     @OnClick(R.id.overlap_check_btn)
     public void overLapCheck(){
 
-        //서버 테스트용
         String check_id = edit_id.getText().toString();
         if(check_id != null){
             UserInfo duplicateId = new UserInfo(check_id);
@@ -132,11 +130,11 @@ public class RegisterActivity extends AppCompatActivity {
     //회원가입 완료 버튼
     @OnClick(R.id.signup_btn)
     public void signup_btn(){
+
         //다른속성 Null 체크해야됨
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
 
-        //서버테스트용
         String id = edit_id.getText().toString();
         String password = edit_psw.getText().toString();
         String name = edit_name.getText().toString();

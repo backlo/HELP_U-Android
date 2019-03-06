@@ -70,12 +70,15 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         locationService();
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
 
-        editor.putInt("batteryAmount",30);
-        editor.putInt("helpcount",5);
+        if(sp.getInt("batteryAmount",0) == 0 || sp.getInt("helpcount",0) == 0){
+            SharedPreferences.Editor editor = sp.edit();
 
-        editor.commit();
+            editor.putInt("batteryAmount",30);
+            editor.putInt("helpcount",5);
+
+            editor.commit();
+        }
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
@@ -86,12 +89,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         startService(intent);
 
         locationService();
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void getEvent(Getnoti event){
-        Log.e("event bus",""+event.location);
     }
 
     //도움 요청 버튼
@@ -129,6 +126,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         }
     }
 
+    //뒤로가기 버튼
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -146,10 +144,8 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         }
     }
 
+    // 요청자 위치 찾기
     public void locationService() {
-
-        Log.e("MainActiviy >> " ,"locationService시작");
-
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
@@ -183,6 +179,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
 
     }
 
+    //provider에게 도움 요청 보내는 함수 ( 서버로 보냄)
     private void sendHelpRequest(){
         String id = sp.getString("id","");
         String message = sp.getString("message","");
@@ -226,6 +223,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         });
     }
 
+    //위치,주소록 퍼미션 체크부분
     private void setPermissionLocation(){
         String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -238,17 +236,20 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         }
     }
 
+    //위치,주소록 퍼미션 체크부분
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    //위치,주소록 퍼미션 체크부분
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
         Log.e("Permission >> ", "why not call");
     }
 
+    //위치,주소록 퍼미션 체크부분
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
         if(EasyPermissions.somePermissionDenied(this, String.valueOf(perms))){
@@ -257,6 +258,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         }
     }
 
+    //위치,주소록 퍼미션 체크부분
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.e("Permission >> ", "onActivityResult Method !!");

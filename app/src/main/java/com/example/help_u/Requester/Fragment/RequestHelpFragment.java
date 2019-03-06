@@ -62,6 +62,7 @@ public class RequestHelpFragment extends Fragment {
         return v;
     }
 
+    //도움 횟수 설정 버튼
     @OnClick(R.id.help_commit)
     public void helpCommit(){
         int id = helpGroup.getCheckedRadioButtonId();
@@ -76,6 +77,7 @@ public class RequestHelpFragment extends Fragment {
         Toast.makeText(getContext(), "설정 완료!", Toast.LENGTH_SHORT).show();
     }
 
+    //나가는 버튼
     @OnClick(R.id.help_cancel)
     public void helpCancel(){
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();

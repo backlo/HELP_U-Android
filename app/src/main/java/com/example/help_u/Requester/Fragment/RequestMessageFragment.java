@@ -47,6 +47,7 @@ public class RequestMessageFragment extends Fragment {
         return v;
     }
 
+    //메시지 확인 버튼
     @OnClick(R.id.message_commit)
     public void messageCommit(){
         String message_data = message.getText().toString();
@@ -61,6 +62,7 @@ public class RequestMessageFragment extends Fragment {
         Toast.makeText(getContext(), "설정 되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
+    //취소 버튼
     @OnClick(R.id.message_cancel)
     public void messageCancel(){
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();

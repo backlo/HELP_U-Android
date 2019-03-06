@@ -47,7 +47,6 @@ public class RequestUserInfoFragment extends Fragment {
 
     public RequestUserInfoFragment() {   }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +63,7 @@ public class RequestUserInfoFragment extends Fragment {
         return v;
     }
 
+    //사용자 정보 수정하고 확인하는 버튼
     @OnClick(R.id.userinfo_commit)
     public void userinfoCommit(){
         String name = nameEdit.getText().toString();
@@ -98,6 +98,7 @@ public class RequestUserInfoFragment extends Fragment {
         });
     }
 
+    //취소버튼
     @OnClick(R.id.userinfo_cancel)
     public void userinfoiCancel(){
         if(checktype){
@@ -108,16 +109,12 @@ public class RequestUserInfoFragment extends Fragment {
         }
     }
 
-
-
-
-
+    //수정된 사용자의 정보를 서버로 보내는 함수
     private void getUserInfo(){
 
         final RetrofitService service = retrofit.create(RetrofitService.class);
 
         String id = sp.getString("id", "");
-        Log.e("UserInfo >> ", id);
 
         final GetUserInfo getUserInfo = new GetUserInfo(id);
         service.getUserInfo(getUserInfo).enqueue(new Callback<ServerResponse>() {
@@ -142,11 +139,9 @@ public class RequestUserInfoFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-                Log.e("UserInfo값 error->", "" + t.toString());
                 try{
                     Toast.makeText(getContext(), "서버에 연결할수 없습니다.", Toast.LENGTH_SHORT).show();
                 } catch (NullPointerException e){
-                    Log.e("UserInfo error->", "NullPointException 발생");
                     Toast.makeText(getContext(), "서버에 연결할수 없습니다..", Toast.LENGTH_SHORT).show();
                 }
 

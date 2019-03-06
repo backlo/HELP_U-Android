@@ -68,6 +68,7 @@ public class RequestBatteryFragment extends Fragment {
         return v;
     }
 
+    //베터리 량 확인부분
     @OnClick(R.id.battery_commit)
     public void batteryCommit() {
         int id = batteryGroup.getCheckedRadioButtonId();
@@ -86,6 +87,7 @@ public class RequestBatteryFragment extends Fragment {
 
     }
 
+    //취소 부분
     @OnClick(R.id.battery_cancel)
     public void batteryCancel() {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
