@@ -104,6 +104,7 @@ public class ProviderAlarmFragment extends Fragment {
 
     @OnCheckedChanged(R.id.alarm_switch)
     public void alarmSwitch(){
+        //알람 스위치 on,off 이벤트
         if(alarm_switch.isChecked()){
             editor = sp.edit();
             editor.putString("alarm","on");

@@ -69,6 +69,7 @@ public class ProviderSettingFragment extends Fragment {
          LogoutDialog dialog = new LogoutDialog(getContext());
         dialog.show();*/
 
+        //로그아웃 다이얼로그 띄우기
         if (preventionClick() == true) {
             //AlertDialog 알람 사용
             AlertDialog.Builder logoutAlert = new AlertDialog.Builder(getContext());
