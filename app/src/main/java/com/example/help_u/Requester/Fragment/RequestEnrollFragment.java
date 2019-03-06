@@ -96,13 +96,17 @@ public class RequestEnrollFragment extends Fragment {
     @OnClick(R.id.enroll_del)
     public void delPhone() {
         int count, checked;
-
+        String number;
         count = adapter.getCount();
 
         if(count>0){
             checked = listView.getCheckedItemPosition();
-            String number = (String) adapter.getItem(checked);
-
+            if(checked==-1){
+                Toast.makeText(getActivity().getApplicationContext(),"삭제를 눌러주세요!", Toast.LENGTH_SHORT).show();
+                return;
+            } else{
+               number  = (String) adapter.getItem(checked);
+            }
             String id = sp.getString("id", "");
 
             final RetrofitService service = retrofit.create(RetrofitService.class);

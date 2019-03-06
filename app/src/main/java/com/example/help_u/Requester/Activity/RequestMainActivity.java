@@ -70,6 +70,13 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         locationService();
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+
+        editor.putInt("batteryAmount",30);
+        editor.putInt("helpcount",5);
+
+        editor.commit();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())

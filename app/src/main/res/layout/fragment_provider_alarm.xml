@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
 
@@ -9,61 +10,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorMainTheme"
-        android:textColor="@color/colorWhite"
         android:gravity="center"
         android:text="알림 설정"
-        android:textSize="50dp" />
+        android:textColor="@color/colorWhite"
+        android:textSize="40dp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
-        <Switch
-            android:id="@+id/alarm_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleX="2"
-            android:scaleY="2"
-            android:switchPadding="15dp"
-            android:theme="@style/CustomSwitch"
-            android:checked="true"
-            android:text="알람" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Switch
+                android:id="@+id/alarm_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:switchPadding="15dp"
+                android:text="알람"
+                android:theme="@style/CustomSwitch" />
+        </LinearLayout>
+
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/sound_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
                 android:layout_marginRight="30dp"
                 android:buttonTint="@color/colorButtonTint"
-                android:text="진동" />
+                android:text="진동"
+                android:textSize="30sp" />
 
             <RadioButton
-                android:buttonTint="@color/colorButtonTint"
                 android:id="@+id/vibrate_radio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:text="소리" />
-
-
+                android:buttonTint="@color/colorButtonTint"
+                android:text="소리"
+                android:textSize="30sp" />
         </RadioGroup>
 
     </LinearLayout>
 
-</LinearLayout>
+
+</FrameLayout>
