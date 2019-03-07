@@ -130,8 +130,9 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent serviceIntent = new Intent(getApplicationContext(), MyServiceRequester.class);
-        stopService(serviceIntent);
+        //
+//        Intent serviceIntent = new Intent(getApplicationContext(), MyServiceRequester.class);
+//        stopService(serviceIntent);
     }
 
     //더블클릭 방지 함수
