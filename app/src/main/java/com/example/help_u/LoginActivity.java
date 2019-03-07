@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(login_password.getWindowToken(), 0);
     }
 
+    //로그인 버튼 서버로 아이디 비밀번호 보내서 맞는지 확인
     @OnClick(R.id.sign_login)
     public void login() {
         sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
@@ -165,8 +166,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
-
+    //회원가입버튼
     @OnClick(R.id.sign_register)
     public void register() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -174,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    //시작할때 자동 로그인 되게 하는 함수
     @Override
     protected void onStart() {
         super.onStart();

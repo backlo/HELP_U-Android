@@ -1,5 +1,6 @@
 package com.example.help_u.Requester.Data;
 
+//번호 삭제하고 서버로 보내는 서버 부분
 public class RemoveNumber {
 
     private String requester;

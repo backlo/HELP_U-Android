@@ -72,7 +72,7 @@ public class RequestEnrollFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_request_enroll, container, false);
         ButterKnife.bind(this, v);
 
-        items = new ArrayList<String>() ;
+        items = new ArrayList<String>();
         adapter = new ArrayAdapter(getActivity(), R.layout.my_single_choice, items);
 
         sp = getActivity().getSharedPreferences("Requester", Activity.MODE_PRIVATE);
@@ -85,6 +85,7 @@ public class RequestEnrollFragment extends Fragment {
         return v;
     }
 
+    //반호 등록 버튼
     @OnClick(R.id.enroll_add)
     public void addPhone() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -93,19 +94,20 @@ public class RequestEnrollFragment extends Fragment {
 
     }
 
+    //번호 삭제 부분
     @OnClick(R.id.enroll_del)
     public void delPhone() {
         int count, checked;
         String number;
         count = adapter.getCount();
 
-        if(count>0){
+        if (count > 0) {
             checked = listView.getCheckedItemPosition();
-            if(checked==-1){
-                Toast.makeText(getActivity().getApplicationContext(),"삭제를 눌러주세요!", Toast.LENGTH_SHORT).show();
+            if (checked == -1) {
+                Toast.makeText(getActivity().getApplicationContext(), "삭제를 눌러주세요!", Toast.LENGTH_SHORT).show();
                 return;
-            } else{
-               number  = (String) adapter.getItem(checked);
+            } else {
+                number = (String) adapter.getItem(checked);
             }
             String id = sp.getString("id", "");
 
@@ -116,9 +118,7 @@ public class RequestEnrollFragment extends Fragment {
                 public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                     if (response.isSuccessful()) {
                         ServerResponse serverResponse = response.body();
-                        Log.e("제공자 등록 response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode());
-
-                            Toast.makeText(getContext(), "삭제 하였습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "삭제 하였습니다.", Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -130,7 +130,7 @@ public class RequestEnrollFragment extends Fragment {
             });
 
             if (checked > -1 && checked < count) {
-                items.remove(checked) ;
+                items.remove(checked);
                 listView.clearChoices();
                 adapter.notifyDataSetChanged();
             }
@@ -138,11 +138,13 @@ public class RequestEnrollFragment extends Fragment {
 
     }
 
+    //등록 확인 버튼
     @OnClick({R.id.enroll_commit, R.id.enroll_cancel})
     public void enrollCommit() {
         getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).addToBackStack(null).commit();
     }
 
+    //등록하고 서버로 보내는 함수
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         String[] phonepro = new String[]{
@@ -167,14 +169,14 @@ public class RequestEnrollFragment extends Fragment {
                     ServerResponse serverResponse = response.body();
                     Log.e("제공자 등록 response->", "" + serverResponse.getMessage() + "," + serverResponse.getResultCode());
 
-                    if(serverResponse.getResultCode() == 110){
-                        Toast.makeText(getContext(),"등록된 번호입니다.",Toast.LENGTH_SHORT).show();
-                    } else if(serverResponse.getResultCode() == 104){
-                        Toast.makeText(getContext(),"가입되지 않는 휴대폰 사용자 입니다.",Toast.LENGTH_SHORT).show();
-                    } else{
+                    if (serverResponse.getResultCode() == 110) {
+                        Toast.makeText(getContext(), "등록된 번호입니다.", Toast.LENGTH_SHORT).show();
+                    } else if (serverResponse.getResultCode() == 104) {
+                        Toast.makeText(getContext(), "가입되지 않는 휴대폰 사용자 입니다.", Toast.LENGTH_SHORT).show();
+                    } else {
                         items.add(number);
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(),"등록 하였습니다.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "등록 하였습니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -188,6 +190,7 @@ public class RequestEnrollFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //번호 등록하고 서버로 보내는 함수
     public void enrolledNumber() {
 
         final RetrofitService service = retrofit.create(RetrofitService.class);

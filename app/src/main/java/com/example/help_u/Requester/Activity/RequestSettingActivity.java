@@ -21,15 +21,4 @@ public class RequestSettingActivity extends AppCompatActivity {
                 .add(R.id.setting_fragment, new RequestSettingFragment()).commit();
     }
 
-//    public interface OnBackPressListener {
-//        public void onBack();
-//    }
-//
-//    private OnBackPressListener mBackpressListener;
-//
-//    public void setOnBackPressedListener(OnBackPressListener listener) {
-//        mBackpressListener = listener;
-//    }
-
-
 }

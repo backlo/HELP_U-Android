@@ -1,7 +1,6 @@
 package com.example.help_u.Requester.Data;
 
-import java.util.List;
-
+//번호 등록 부분 서버 모델
 public class AddNumber {
 
     private String requester;

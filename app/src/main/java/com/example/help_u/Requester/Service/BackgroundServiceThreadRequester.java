@@ -12,6 +12,7 @@ import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+//백그라운드에서 현재 배터리양을 확인하는 쓰레드 부분
 public class BackgroundServiceThreadRequester extends Thread {
 
     Retrofit retrofit;
@@ -39,6 +40,7 @@ public class BackgroundServiceThreadRequester extends Thread {
         }
     }
 
+    //돌아가면서 사용자가 설정한 배터리양과 현재 배터리양이 같을경우 서버로 도움요청 보냄
     public void run(){
         while(isRun){
             try{

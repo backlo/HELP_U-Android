@@ -24,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+//백에서 도는 부분
 public class MyServiceRequester extends Service {
 
     SharedPreferences sp;
@@ -48,9 +48,9 @@ public class MyServiceRequester extends Service {
                 .build();
     }
 
+    //서비스 시작부분
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("Requester Service >>", "시작");
 
         sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
         int batteryAmount = sp.getInt("batteryAmount", 0);
@@ -62,6 +62,7 @@ public class MyServiceRequester extends Service {
         return START_STICKY;
     }
 
+    //서비스 끝내는 부분
     @Override
     public void onDestroy() {
         thread.stopForever();
@@ -71,6 +72,7 @@ public class MyServiceRequester extends Service {
         super.onDestroy();
     }
 
+    //핸들러로 백에서 사용자 위치 정보 가져오고 서버로 도움요청 보내기
     class LocationRequesterServiceHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
