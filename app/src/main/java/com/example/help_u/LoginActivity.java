@@ -134,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(i);
                                     finish();
                                 }
+
                                 else if("requester".equals(loginResponse.getUser_type())){
                                     Intent i = new Intent(LoginActivity.this, RequestMainActivity.class);
 
@@ -149,6 +150,8 @@ public class LoginActivity extends AppCompatActivity {
                                     finish();
                                 }
 
+                            }else {
+                                Toast.makeText(LoginActivity.this, serverResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

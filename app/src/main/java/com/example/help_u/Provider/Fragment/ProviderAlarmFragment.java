@@ -74,8 +74,6 @@ public class ProviderAlarmFragment extends Fragment {
             }
         }
 
-
-
         aManager = (AudioManager)getActivity().getSystemService(Context.AUDIO_SERVICE);
         NotificationManager notificationManager =
                 (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
@@ -148,14 +146,14 @@ public class ProviderAlarmFragment extends Fragment {
 
     @OnCheckedChanged(R.id.sound_radio)
     public void soundRadioChecked(){
-        if(sound_radio.isChecked() || aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE || aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
+        if(vibrate_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE){
             aManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
         }
     }
 
     @OnCheckedChanged(R.id.vibrate_radio)
     public void vibrateRadioChecked(){
-        if(vibrate_radio.isChecked() || aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL || aManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT){
+        if(sound_radio.isChecked() && aManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL){
             aManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
         }
     }

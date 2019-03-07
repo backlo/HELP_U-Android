@@ -82,7 +82,6 @@
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:text="password check"
             android:textColor="@color/colorWhite" />
 
         <EditText

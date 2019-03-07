@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Data.UserInfo;
@@ -71,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
     Retrofit retrofit;
     UserInfo userInfo;
     String token;
+    public boolean loginflag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +111,10 @@ public class RegisterActivity extends AppCompatActivity {
                         ServerResponse result = response.body();
                         if(result.getResultCode() == 0){
                             overrlap_result_txt.setText("사용하실수있는아이디입니다.");
+                            loginflag = true;
                         }else{
                             overrlap_result_txt.setText("이미사용중인아이디입니다.");
+                            loginflag = false;
                         }
                         Log.e("중복체크 response->",""+result.getResultCode()+","+result.getMessage());
                     }
@@ -124,71 +128,79 @@ public class RegisterActivity extends AppCompatActivity {
         }else{
             overrlap_result_txt.setText("아이디를 입력해주세요.");
         }
-
-
-
-
     }
     //회원가입 완료 버튼
     @OnClick(R.id.signup_btn)
     public void signup_btn(){
         //다른속성 Null 체크해야됨
-        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-        startActivity(intent);
+        if(loginflag){
+            //서버테스트용
+            String id = edit_id.getText().toString();
+            String password = edit_psw.getText().toString();
+            String password_check = edit_psw_second.getText().toString();
+            String name = edit_name.getText().toString();
+            String phone = edit_phonenum.getText().toString();
+            String personal_num = edit_residentnum.getText().toString();
+            String address = edit_address.getText().toString();
 
-        //서버테스트용
-        String id = edit_id.getText().toString();
-        String password = edit_psw.getText().toString();
-        String name = edit_name.getText().toString();
-        String phone = edit_phonenum.getText().toString();
-        String personal_num = edit_residentnum.getText().toString();
-        String address = edit_address.getText().toString();
-        int gender = -1;
-        if(radio_girl.isChecked()){
-            gender = 1;
-        }
-        if(radio_man.isChecked()){
-            gender = 0;
-        }
-        String user_type = "";
-        if(help_radio.isChecked()){
-            user_type = "requester";
+            int gender = -1;
+            if(radio_girl.isChecked()){
+                gender = 1;
+            }
+            if(radio_man.isChecked()){
+                gender = 0;
+            }
+            String user_type = "";
+            if(help_radio.isChecked()){
+                user_type = "requester";
+            }else{
+                user_type = "provider";
+            }
+
+            if(!password.equals(password_check)){
+                edit_psw_checker.setText("비밀번호가 일치하지 않습니다!");
+                Toast.makeText(this, "비밀번호 불일치", Toast.LENGTH_SHORT).show();
+            }else{
+                edit_psw_checker.setText("비밀번호가 일치합니다!");
+                userInfo.setId(id);
+                userInfo.setPassword(password);
+                userInfo.setName(name);
+                userInfo.setPhone(phone);
+                userInfo.setPersonal_no(personal_num);
+                userInfo.setGender(gender);
+                userInfo.setUser_type(user_type);
+                userInfo.setAddress(address);
+                userInfo.setToken(token);
+
+                //Requester 이름저장
+                SharedPreferences sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+
+                editor.putString("name",id);
+                editor.commit();
+
+                RetrofitService service = retrofit.create(RetrofitService.class);
+                service.sendUserInfo(userInfo).enqueue(new Callback<ServerResponse>() {
+                    @Override
+                    public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                        if(response.isSuccessful()){
+                            ServerResponse result = response.body();
+                            Log.e("회원가입 response->",""+result.getMessage()+","+result.getResultCode());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ServerResponse> call, Throwable t) {
+                        Log.e("error->",""+t.toString());
+                    }
+                });
+
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
         }else{
-            user_type = "provider";
+            Toast.makeText(this, "아이디중복체크먼저 해주세요!", Toast.LENGTH_SHORT).show();
         }
-
-        userInfo.setId(id);
-        userInfo.setPassword(password);
-        userInfo.setName(name);
-        userInfo.setPhone(phone);
-        userInfo.setPersonal_no(personal_num);
-        userInfo.setGender(gender);
-        userInfo.setUser_type(user_type);
-        userInfo.setAddress(address);
-        userInfo.setToken(token);
-
-        //Requester 이름저장
-        SharedPreferences sp = getSharedPreferences("Requester", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-
-        editor.putString("name",id);
-        editor.commit();
-
-        RetrofitService service = retrofit.create(RetrofitService.class);
-        service.sendUserInfo(userInfo).enqueue(new Callback<ServerResponse>() {
-            @Override
-            public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
-                if(response.isSuccessful()){
-                    ServerResponse result = response.body();
-                    Log.e("회원가입 response->",""+result.getMessage()+","+result.getResultCode());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ServerResponse> call, Throwable t) {
-                Log.e("error->",""+t.toString());
-            }
-        });
 
     }
 
