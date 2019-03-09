@@ -82,6 +82,7 @@ public class RequestMainActivity extends AppCompatActivity {
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         Log.e("MyServiceRequester >> ", "service 시작");
         Intent intent = new Intent(getApplicationContext(), MyServiceRequester.class);
         startService(intent);
@@ -148,13 +149,13 @@ public class RequestMainActivity extends AppCompatActivity {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();
                     lat = location.getLatitude();
                     Log.e("MainActiviy >> " ,lon +","+lat);
-                }
+            }
 
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -198,9 +199,10 @@ public class RequestMainActivity extends AppCompatActivity {
         service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                Log.e("도움 요청 response->", "들어옴");
                 if(response.isSuccessful()){
                     ServerResponse body = response.body();
-                    Log.e("도움요청 to server", body.getResultCode()+"");
+                    Log.e("도움 요청 response->", "" + body.getMessage() + "," + body.getResultCode());
                     if(body != null){
                         if(body.getResultCode() == 107){
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
