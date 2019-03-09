@@ -65,7 +65,7 @@ public class RequestMessageFragment extends Fragment {
     //취소 버튼
     @OnClick(R.id.message_cancel)
     public void messageCancel(){
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
+        getActivity().onBackPressed();
     }
 
 }

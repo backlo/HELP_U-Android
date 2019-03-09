@@ -80,7 +80,7 @@ public class RequestHelpFragment extends Fragment {
     //나가는 버튼
     @OnClick(R.id.help_cancel)
     public void helpCancel(){
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
+        getActivity().onBackPressed();
     }
 
 }

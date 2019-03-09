@@ -141,7 +141,7 @@ public class RequestEnrollFragment extends Fragment {
     //등록 확인 버튼
     @OnClick({R.id.enroll_commit, R.id.enroll_cancel})
     public void enrollCommit() {
-        getFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).addToBackStack(null).commit();
+        getActivity().onBackPressed();
     }
 
     //등록하고 서버로 보내는 함수
@@ -150,6 +150,11 @@ public class RequestEnrollFragment extends Fragment {
         String[] phonepro = new String[]{
                 ContactsContract.CommonDataKinds.Phone.NUMBER
         };
+
+        if(data == null){
+            Log.e("Enroll data >> ","번호등록 선택 안함");
+            return;
+        }
 
         Cursor cursor = getActivity().getContentResolver().query(data.getData(), phonepro, null, null, null);
         cursor.moveToFirst();

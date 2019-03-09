@@ -199,8 +199,8 @@ public class RequestMainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 if(response.isSuccessful()){
-                    Log.e("도움요청 to server","success!!!!!");
                     ServerResponse body = response.body();
+                    Log.e("도움요청 to server", body.getResultCode()+"");
                     if(body != null){
                         if(body.getResultCode() == 107){
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
@@ -217,9 +217,10 @@ public class RequestMainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-
+                Log.e("도움요청 to server","fail!!!!!");
             }
         });
+        Log.e("RequesterMain >> ", "넘어감?");
     }
 
 

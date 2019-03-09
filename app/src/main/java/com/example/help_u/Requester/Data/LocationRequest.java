@@ -1,5 +1,7 @@
 package com.example.help_u.Requester.Data;
 
+import android.util.Log;
+
 //도움오청을 서버로 보낼때 서버 모델 부분
 public class LocationRequest {
 
