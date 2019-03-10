@@ -1,5 +1,6 @@
 package com.example.help_u;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
@@ -26,16 +29,20 @@ import com.example.help_u.Requester.Activity.RequestMainActivity;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
     private static long lastClickTime = 0;
     private static final int LOCATION_PER = 1;
     @BindView(R.id.sign_login)
@@ -62,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     private final int REQUEST_WIDTH = 512;
     private final int REQUEST_HEIGHT = 512;
     String gettoken = "";
+    public static final int REQUEST_CODE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +78,9 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
 
-        refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        setPermissionLocation();
 
+        refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
         modifyBitmap(R.drawable.main);
 
@@ -243,5 +252,50 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return size;
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    private void setPermissionLocation(){
+        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_CONTACTS};
+
+        if(EasyPermissions.hasPermissions(this, perms)){
+            Log.e("Permission >> " , "Location Checked");
+        } else{
+            EasyPermissions.requestPermissions(this,"권한 허용 부탁드립니다.", REQUEST_CODE, perms);
+        }
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Log.e("Permission >> ", "why not call");
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if(EasyPermissions.somePermissionDenied(this, String.valueOf(perms))){
+            new AppSettingsDialog.Builder(this).build().show();
+            Log.e("Permission >> ","onPermissionDenied!");
+        }
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("Permission >> ", "onActivityResult Method !!");
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE){
+            Log.e("Permission >> ", "onActivityResult!!");
+        }
     }
 }

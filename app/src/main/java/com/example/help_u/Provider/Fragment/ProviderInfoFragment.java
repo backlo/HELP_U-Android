@@ -122,7 +122,7 @@ public class ProviderInfoFragment extends Fragment {
     public void onclick_info() {
 
         if (getFragmentManager() != null) {
-            getFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new ProviderSettingFragment()).addToBackStack(null).commit();
+            getActivity().onBackPressed();
 
         }
     }

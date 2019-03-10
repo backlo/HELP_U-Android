@@ -102,9 +102,9 @@ public class RequestUserInfoFragment extends Fragment {
     @OnClick(R.id.userinfo_cancel)
     public void userinfoiCancel(){
         if(checktype){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
+            getActivity().onBackPressed();
         }else{
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.provider_setting_fragment, new ProviderSettingFragment()).commit();
+            getActivity().onBackPressed();
 
         }
     }

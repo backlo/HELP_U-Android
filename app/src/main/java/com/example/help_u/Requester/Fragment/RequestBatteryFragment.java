@@ -89,7 +89,7 @@ public class RequestBatteryFragment extends Fragment {
     //취소 부분
     @OnClick(R.id.battery_cancel)
     public void batteryCancel() {
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.setting_fragment, new RequestSettingFragment()).commit();
+        getActivity().onBackPressed();
     }
 
 }

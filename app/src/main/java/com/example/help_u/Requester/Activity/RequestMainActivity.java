@@ -41,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RequestMainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public class RequestMainActivity extends AppCompatActivity {
 
     @BindView(R.id.help_btn)
     LinearLayout helpBtn;
@@ -57,7 +57,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
     Retrofit retrofit;
 
     SharedPreferences sp;
-    public static final int REQUEST_CODE = 123;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +65,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         setContentView(R.layout.activity_request_main);
         ButterKnife.bind(this);
 
-        setPermissionLocation();
         locationService();
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
@@ -84,6 +82,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
                 .baseUrl(RetrofitService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         Log.e("MyServiceRequester >> ", "service 시작");
         Intent intent = new Intent(getApplicationContext(), MyServiceRequester.class);
         startService(intent);
@@ -150,13 +149,13 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         try {
 
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, new LocationListener() {
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 500, 0, new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();
                     lat = location.getLatitude();
                     Log.e("MainActiviy >> " ,lon +","+lat);
-                }
+            }
 
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -200,9 +199,10 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                Log.e("도움 요청 response->", "들어옴");
                 if(response.isSuccessful()){
-                    Log.e("도움요청 to server","success!!!!!");
                     ServerResponse body = response.body();
+                    Log.e("도움 요청 response->", "" + body.getMessage() + "," + body.getResultCode());
                     if(body != null){
                         if(body.getResultCode() == 107){
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
@@ -219,55 +219,12 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
 
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-
+                Log.e("도움요청 to server","fail!!!!!");
             }
         });
+        Log.e("RequesterMain >> ", "넘어감?");
     }
 
-    //위치,주소록 퍼미션 체크부분
-    private void setPermissionLocation(){
-        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_CONTACTS};
-
-        if(EasyPermissions.hasPermissions(this, perms)){
-            Log.e("Permission >> " , "Location Checked");
-        } else{
-            EasyPermissions.requestPermissions(this,"권한 허용 부탁드립니다.", REQUEST_CODE, perms);
-        }
-    }
-
-    //위치,주소록 퍼미션 체크부분
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    //위치,주소록 퍼미션 체크부분
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        Log.e("Permission >> ", "why not call");
-    }
-
-    //위치,주소록 퍼미션 체크부분
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if(EasyPermissions.somePermissionDenied(this, String.valueOf(perms))){
-            new AppSettingsDialog.Builder(this).build().show();
-            Log.e("Permission >> ","onPermissionDenied!");
-        }
-    }
-
-    //위치,주소록 퍼미션 체크부분
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.e("Permission >> ", "onActivityResult Method !!");
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE){
-            Log.e("Permission >> ", "onActivityResult!!");
-        }
-    }
 
 
 }
