@@ -41,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RequestMainActivity extends AppCompatActivity {
+public class RequestMainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.help_btn)
     LinearLayout helpBtn;
@@ -57,9 +57,12 @@ public class RequestMainActivity extends AppCompatActivity {
     Retrofit retrofit;
 
     SharedPreferences sp;
+    public static final int REQUEST_CODE = 123;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setPermissionLocation();
         //FullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_request_main);
@@ -228,5 +231,48 @@ public class RequestMainActivity extends AppCompatActivity {
         Log.e("RequesterMain >> ", "넘어감?");
     }
 
+    //위치,주소록 퍼미션 체크부분
+    private void setPermissionLocation(){
+        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_CONTACTS};
 
+        if(EasyPermissions.hasPermissions(this, perms)){
+            Log.e("Permission >> " , "Location Checked");
+        } else{
+            EasyPermissions.requestPermissions(this,"권한 허용 부탁드립니다.", REQUEST_CODE, perms);
+        }
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Log.e("Permission >> ", "why not call");
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if(EasyPermissions.somePermissionDenied(this, String.valueOf(perms))){
+            new AppSettingsDialog.Builder(this).build().show();
+            Log.e("Permission >> ","onPermissionDenied!");
+        }
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("Permission >> ", "onActivityResult Method !!");
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE){
+            Log.e("Permission >> ", "onActivityResult!!");
+        }
+    }
 }
