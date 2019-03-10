@@ -96,6 +96,8 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
     double thread_lon = 0;
     String id = "";
     NotificationRequest notificationRequest;
+    LatLng final_loc;
+    String final_address;
 
     @BindView(R.id.main_provider_setting_btn)
     LinearLayout setting_btn;
@@ -246,18 +248,8 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
         String intent_Loc = event.location;
         String requester_Loc[] = intent_Loc.split(",");
-        LatLng final_loc = new LatLng(Double.parseDouble(requester_Loc[0]), Double.parseDouble(requester_Loc[1]));
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(final_loc);
-        markerOptions.title("요청자위치");
-        markerOptions.snippet(event.address);
-        markerOptions.draggable(true);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-        mGoogleMap.addMarker(markerOptions);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(final_loc, 15);
-        mGoogleMap.moveCamera(cameraUpdate);
+        final_loc = new LatLng(Double.parseDouble(requester_Loc[0]), Double.parseDouble(requester_Loc[1]));
+        final_address = event.address;
 
 
         final String requesterid = event.id;
@@ -285,6 +277,17 @@ public class ProviderMainActivity extends AppCompatActivity implements OnMapRead
 
                     }
                 });
+
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(final_loc);
+                markerOptions.title("요청자위치");
+                markerOptions.snippet(final_address);
+                markerOptions.draggable(true);
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                mGoogleMap.addMarker(markerOptions);
+
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(final_loc, 15);
+                mGoogleMap.moveCamera(cameraUpdate);
             }
         }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
             @Override
