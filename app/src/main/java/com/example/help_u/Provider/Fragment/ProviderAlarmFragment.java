@@ -123,7 +123,6 @@ public class ProviderAlarmFragment extends Fragment {
                 }
             });
         }else{
-
             editor = sp.edit();
             editor.putString("alarm","off");
             editor.commit();
