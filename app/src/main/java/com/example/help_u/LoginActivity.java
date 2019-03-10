@@ -81,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements EasyPermissions.
         setPermissionLocation();
 
         refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.e("refreshedToken",""+refreshedToken);
 
         modifyBitmap(R.drawable.main);
 
@@ -110,11 +111,10 @@ public class LoginActivity extends AppCompatActivity implements EasyPermissions.
         Log.e("loginactivity",""+gettoken);
 
         if (preventionClick() == true && gettoken != null) {
-
             // 서버통신 테스트용 코드
             String id = login_id.getText().toString();
             String password = login_password.getText().toString();
-            final UserInfo userInfo = new UserInfo(id, password,gettoken);
+            final UserInfo userInfo = new UserInfo(id, password,refreshedToken);
 
             RetrofitService service = retrofit.create(RetrofitService.class);
             service.login(userInfo).enqueue(new Callback<ServerResponse>() {
