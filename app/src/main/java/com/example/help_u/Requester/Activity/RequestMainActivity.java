@@ -41,7 +41,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RequestMainActivity extends AppCompatActivity {
+public class RequestMainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.help_btn)
     LinearLayout helpBtn;
@@ -57,9 +57,12 @@ public class RequestMainActivity extends AppCompatActivity {
     Retrofit retrofit;
 
     SharedPreferences sp;
+    public static final int REQUEST_CODE = 123;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setPermissionLocation();
         //FullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_request_main);
@@ -69,11 +72,11 @@ public class RequestMainActivity extends AppCompatActivity {
 
         sp = getSharedPreferences("Requester", MODE_PRIVATE);
 
-        if(sp.getInt("batteryAmount",0) == 0 || sp.getInt("helpcount",0) == 0){
+        if (sp.getInt("batteryAmount", 0) == 0 || sp.getInt("helpcount", 0) == 0) {
             SharedPreferences.Editor editor = sp.edit();
 
-            editor.putInt("batteryAmount",30);
-            editor.putInt("helpcount",5);
+            editor.putInt("batteryAmount", 30);
+            editor.putInt("helpcount", 5);
 
             editor.commit();
         }
@@ -154,8 +157,8 @@ public class RequestMainActivity extends AppCompatActivity {
                 public void onLocationChanged(Location location) {
                     lon = location.getLongitude();
                     lat = location.getLatitude();
-                    Log.e("MainActiviy >> " ,lon +","+lat);
-            }
+                    Log.e("MainActiviy >> ", lon + "," + lat);
+                }
 
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -180,36 +183,39 @@ public class RequestMainActivity extends AppCompatActivity {
     }
 
     //provider에게 도움 요청 보내는 함수 ( 서버로 보냄)
-    private void sendHelpRequest(){
-        String id = sp.getString("id","");
-        String message = sp.getString("message","");
-        int count = sp.getInt("helpcount",0);
+    private void sendHelpRequest() {
+        String id = sp.getString("id", "");
+        String message = sp.getString("message", "");
+        int count = sp.getInt("helpcount", 0);
 
-        if("".equals(message)){
-            message="도와주세요!";
+        if ("".equals(message)) {
+            message = "도와주세요!";
         }
-        if(count == 0){
+        if (count == 0) {
             count = 5;
         }
 
-        Log.e("RequesterMain >> ", id +", " + message + ", " + count );
-        LocationRequest locationRequest = new LocationRequest(""+lat+","+lon,id,message,count);
+        Log.e("RequesterMain >> ", id + ", " + message + ", " + count);
+        LocationRequest locationRequest = new LocationRequest("" + lat + "," + lon, id, message, count);
 
         RetrofitService service = retrofit.create(RetrofitService.class);
         service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
             @Override
             public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
                 Log.e("도움 요청 response->", "들어옴");
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     ServerResponse body = response.body();
                     Log.e("도움 요청 response->", "" + body.getMessage() + "," + body.getResultCode());
-                    if(body != null){
-                        if(body.getResultCode() == 107){
+                    if (body != null) {
+                        if (body.getResultCode() == 107) {
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
-                        } else{
+                        } else if (body.getResultCode() == 106) {
+                            Toast.makeText(getApplicationContext(), "등록된 번호가 없습니다.", Toast.LENGTH_SHORT).show();
+                        } else {
                             Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
                             startActivity(i);
                         }
+
 
                         body.getMessage();
                         body.getParam();
@@ -219,12 +225,54 @@ public class RequestMainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ServerResponse> call, Throwable t) {
-                Log.e("도움요청 to server","fail!!!!!");
+                Log.e("도움요청 to server", "fail!!!!!");
             }
         });
         Log.e("RequesterMain >> ", "넘어감?");
     }
 
+    //위치,주소록 퍼미션 체크부분
+    private void setPermissionLocation(){
+        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_CONTACTS};
 
+        if(EasyPermissions.hasPermissions(this, perms)){
+            Log.e("Permission >> " , "Location Checked");
+        } else{
+            EasyPermissions.requestPermissions(this,"권한 허용 부탁드립니다.", REQUEST_CODE, perms);
+        }
+    }
 
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        Log.e("Permission >> ", "why not call");
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if(EasyPermissions.somePermissionDenied(this, String.valueOf(perms))){
+            new AppSettingsDialog.Builder(this).build().show();
+            Log.e("Permission >> ","onPermissionDenied!");
+        }
+    }
+
+    //위치,주소록 퍼미션 체크부분
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("Permission >> ", "onActivityResult Method !!");
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE){
+            Log.e("Permission >> ", "onActivityResult!!");
+        }
+    }
 }
