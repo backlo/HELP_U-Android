@@ -210,7 +210,7 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
                         if (body.getResultCode() == 107) {
                             Toast.makeText(getApplicationContext(), "이미 도움 요청 중입니다.", Toast.LENGTH_SHORT).show();
                         } else if (body.getResultCode() == 106) {
-                            Toast.makeText(getApplicationContext(), "등록된 번호가 없습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "로그인된 사용자가 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
                             startActivity(i);
