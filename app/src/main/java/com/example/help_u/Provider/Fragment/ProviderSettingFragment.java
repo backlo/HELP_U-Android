@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,20 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.help_u.LoginActivity;
+import com.example.help_u.Provider.Data.ServerResponse;
+import com.example.help_u.Provider.Data.UserInfo;
+import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.Provider.Util.Service.MyService;
 import com.example.help_u.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProviderSettingFragment extends Fragment {
 
@@ -36,7 +45,9 @@ public class ProviderSettingFragment extends Fragment {
 
     private static long lastClickTime = 0;
     SharedPreferences sp;
-
+    UserInfo userInfo;
+    String id;
+    Retrofit retrofit;
     public ProviderSettingFragment() {
     }
 
@@ -46,6 +57,14 @@ public class ProviderSettingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_provider_setting, container, false);
         ButterKnife.bind(this, view);
         sp  = getActivity().getSharedPreferences("Requester", Context.MODE_PRIVATE);
+        userInfo = new UserInfo();
+        id = sp.getString("id", "");
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
         return view;
     }
 
@@ -69,6 +88,9 @@ public class ProviderSettingFragment extends Fragment {
          LogoutDialog dialog = new LogoutDialog(getContext());
         dialog.show();*/
 
+
+        userInfo.setId(id);
+
         //로그아웃 다이얼로그 띄우기
         if (preventionClick() == true) {
             //AlertDialog 알람 사용
@@ -79,6 +101,22 @@ public class ProviderSettingFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
+                    RetrofitService service = retrofit.create(RetrofitService.class);
+                    service.logout(userInfo).enqueue(new Callback<ServerResponse>() {
+                        @Override
+                        public void onResponse(Call<ServerResponse> call, Response<ServerResponse> response) {
+                            if(response.isSuccessful()){
+                                ServerResponse body = response.body();
+                                Log.e("logout request",""+body.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ServerResponse> call, Throwable t) {
+                                Log.e("logout fail",""+t.toString());
+                        }
+                    });
+                    
                     //로그아웃 보내기
                     Toast.makeText(getContext(), "로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editor = sp.edit();

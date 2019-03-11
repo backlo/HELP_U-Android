@@ -59,5 +59,8 @@ public interface RetrofitService  {
 
     @POST("/helpu/user/update")
     Call<ServerResponse> modify_User(@Body Modify_User modify_user);
+
+    @POST("helpu/user/logout")
+    Call<ServerResponse> logout(@Body UserInfo userInfo);
 }
 
