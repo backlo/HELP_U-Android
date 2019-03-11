@@ -18,15 +18,11 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.help_u.EventBus.Getnoti;
 import com.example.help_u.Provider.Data.ServerResponse;
 import com.example.help_u.Provider.Util.Retrofit.RetrofitService;
 import com.example.help_u.R;
 import com.example.help_u.Requester.Data.LocationRequest;
 import com.example.help_u.Requester.Service.MyServiceRequester;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -98,12 +94,12 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
     public void help_Btn() {
 
         if (preventionClick() == true) {
-            if (lon == 0 || lat == 0) {
-                Log.e("RequestMain Help >> ", "위도 경도 0");
-                Toast.makeText(getApplicationContext(), "다시 보내주세요!", Toast.LENGTH_SHORT).show();
-            } else {
+//            if (lon == 0 || lat == 0) {
+//                Log.e("RequestMain Help >> ", "위도 경도 0");
+//                Toast.makeText(getApplicationContext(), "다시 보내주세요!", Toast.LENGTH_SHORT).show();
+//            } else {
                 sendHelpRequest();
-            }
+//            }
         }
 
     }
@@ -196,7 +192,9 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
         }
 
         Log.e("RequesterMain >> ", id + ", " + message + ", " + count);
-        LocationRequest locationRequest = new LocationRequest("" + lat + "," + lon, id, message, count);
+        //LocationRequest locationRequest = new LocationRequest("" + lat + "," + lon, id, message, count);
+
+        LocationRequest locationRequest = new LocationRequest("37.5818551,127.0098715", id, message, count);
 
         RetrofitService service = retrofit.create(RetrofitService.class);
         service.sendLocation(locationRequest).enqueue(new Callback<ServerResponse>() {
@@ -215,8 +213,6 @@ public class RequestMainActivity extends AppCompatActivity implements EasyPermis
                             Intent i = new Intent(RequestMainActivity.this, RequestPopupActivity.class);
                             startActivity(i);
                         }
-
-
                         body.getMessage();
                         body.getParam();
                     }
